@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Listing from './components/Listing'
 import Header from './components/Header'
 import image from "../public/house1/house1.png"
+import Filter from './components/Filter'
 
 const sampledescription = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus soluta nam mollitia tempore deleniti officiis vero error pariatur in a voluptatibus corporis incidunt, placeat, rem iure cupiditate, dolorum maiores tempora?"
 
@@ -16,6 +17,7 @@ function App() {
         <Listing src="../public/house1/house2.png" title='Enormous House' description={sampledescription} location='Denton, Texas' price='$500' rating='4.59'/>
         <Listing src="../public/house1/house3.png" title='Humongous House' description={sampledescription} location='Plano, Texas' price='$500' rating='3.12'/>
       </div>
+      <Filter />
     </>
   )
 }
