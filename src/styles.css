@@ -1,6 +1,18 @@
 .header{
-    background-color: lightgray;
-    height: 100px;
+    background:#a4a39f;
+    padding: 20px;
+}
+
+.header-title{
+    text-align: left;
+    font-size: 27px;
+    color: #ffffff;
+    font-family: 'Trebuchet MS';
+}
+
+.header-img{
+    max-width: 50px;
+    vertical-align: middle;
 }
   
 .listing{
