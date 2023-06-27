@@ -1,6 +1,6 @@
 .header{
     background:#a4a39f;
-    padding: 20px;
+    padding: 10px;
     position: fixed; /* TODO: filter modal on header doesn't work when this is on */
     top: 0;
     left: 0;
@@ -15,7 +15,7 @@
 }
 
 .header-img{
-    max-width: 50px;
+    max-width: 40px;
     vertical-align: middle;
 }
   
@@ -36,5 +36,5 @@
 }
 
 .main{
-    margin-top: 100px;
+    margin-top: 75px;
 }
