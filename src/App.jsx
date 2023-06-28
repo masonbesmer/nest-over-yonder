@@ -1,22 +1,25 @@
 import { useState } from 'react'
-import Listing from './components/Listing'
+import HomePage from './pages/HomePage'
+import ListingPage from './pages/ListingPage'
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Header from './components/Header'
-import image from "../public/house1/house1.png"
 
-const sampledescription = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus soluta nam mollitia tempore deleniti officiis vero error pariatur in a voluptatibus corporis incidunt, placeat, rem iure cupiditate, dolorum maiores tempora?"
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <Header />
+    <BrowserRouter>
+      <div className="App">
+        <Header/>
+        <Routes>
+          <Route path='/listing' element={<ListingPage />} />
+          <Route path='/' element={<HomePage />} />
+        </Routes>
+      </div>
       
-      <Listing src="../public/house1/house1.png" title='Huge House' description={sampledescription} location='Lakewood, Texas' price='$500' rating='4.89'/>
-      <Listing src="../public/house1/house2.png" title='Enormous House' description={sampledescription} location='Denton, Texas' price='$500' rating='4.59'/>
-      <Listing src="../public/house1/house3.png" title='Humongous House' description={sampledescription} location='Plano, Texas' price='$500' rating='3.12'/>
       
-    </>
+    </BrowserRouter>
   )
 }
 

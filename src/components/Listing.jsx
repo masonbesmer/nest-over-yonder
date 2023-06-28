@@ -3,9 +3,14 @@ import '../styles.css'
 import star from '../assets/star.svg'
 
 function Listing({src, title, description = "sample description", price, rating, location}) {
+  function handleClick() {
+    window.location.href = './pages/Listing.jsx';
+  }
+
+
   return (
     <div className='listing' style={{display: 'flex'}}>
-        <img className='listing-image' src={src} />
+        <img className='listing-image' src={src} onClick={handleClick}/>
         <div className='listing-info'>
             <h1>{title}</h1>
             <h3>{location}</h3>
