@@ -5,7 +5,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Header from './components/Header'
 
 
-function App() {
+function App(props) {
   const [count, setCount] = useState(0)
 
   return (
@@ -13,8 +13,9 @@ function App() {
       <div className="App">
         <Header/>
         <Routes>
-          <Route path='/listing' element={<ListingPage />} />
           <Route path='/' element={<HomePage />} />
+          <Route path='/listing/:id' element={<ListingPage />} />
+          
         </Routes>
       </div>
       
