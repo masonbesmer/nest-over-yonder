@@ -52,23 +52,6 @@ function Header() {
                                 <input type="reset" className="form-control" id="filterReset"/>
                                 <button className="dropdown-item" type="button">Save</button>
                                 <button className="dropdown-item" type="button">Reset</button>
-<<<<<<< HEAD
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col d-flex align-items-center justify-content-end">
-                        {/* Login */}
-                        <button type="button" className="btn btn-secondary">Sign up</button>
-                        <button type="button" className="btn btn-primary">Log in</button>
-                    </div>
-                </div>
-            </div>
-        </header>
-    )
-}
-
-export default Header
-=======
                             </div> */}
             </div>
           </div>
@@ -88,4 +71,3 @@ export default Header
 }
 
 export default Header;
->>>>>>> origin/filterbug
