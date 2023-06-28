@@ -29,12 +29,16 @@
 .listing-image{
     width: 350px;
     height: 332px;
+    cursor: "pointer";
 }
 
 .listing-info{
     margin-left: 1rem;
 }
 
+.top_of_listing_page{
+    display: flex;
+    justify-content: space-between;
 .map-h2 {
     text-transform: uppercase;
     font-size: 1rem;
