@@ -42,11 +42,12 @@ function App() {
   return (
     <>
       <Header />
+      <Map location={[33.185755896934694, -96.80554467522724]} zoomLevel={15}/>
       
       <Listing src="../public/house1/house1.png" title='Huge House' description={sampledescription} location='Lakewood, Texas' price='$500' rating='4.89'/>
       <Listing src="../public/house1/house2.png" title='Enormous House' description={sampledescription} location='Denton, Texas' price='$500' rating='4.59'/>
       <Listing src="../public/house1/house3.png" title='Humongous House' description={sampledescription} location='Plano, Texas' price='$500' rating='3.12'/>
-      <Map location={[pos.lat, pos.lng]} zoomLevel={17}/>
+      
       
     </>
   )
