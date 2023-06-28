@@ -1,29 +1,37 @@
-import React from 'react'
-import '../styles.css'
-import "bootstrap/dist/css/bootstrap.min.css"
-import "react-bootstrap"
-
-// toggleOpen = () => this.setState({ isOpen: !this.state.isOpen });
+import React from "react";
+import "../styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-bootstrap";
+import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js";
 
 function Header() {
-    return (
-        <header className="header">
-            <div className="container-fluid">
-                <div className="row">    
-                    <div className="col d-flex align-items-center">
-                        <img className=" rounded header-img" src="../public/logo.png"  alt="Nest Over Yonder Logo"/>
-                        <div className="container">
-                            <h1 className="header-title">Nest Over Yonder</h1>
-                        </div>
-                    </div>
-                    <div className="col d-flex align-items-center">
-                        <input className="form-control" type="text" placeholder="Search" aria-label="default input example"/>
-                        <button type="button" className="btn btn-primary">Search</button>
-                        <div className="dropdown">
-                            <button type="button" className="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                            Filters
-                            </button>
-                            <div className="dropdown-menu dropdown-menu-right">
+  return (
+    <header className="header">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col d-flex align-items-center">
+            <img
+              className=" rounded header-img"
+              src="../public/logo.png"
+              alt="Nest Over Yonder Logo"
+            />
+            <div className="container">
+              <h1 className="header-title">Nest Over Yonder</h1>
+            </div>
+          </div>
+          <div className="col d-flex align-items-center">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Search"
+              aria-label="default input example"
+            />
+            <button type="button" className="btn btn-primary">
+              Search
+            </button>
+            <div className="popup">
+              <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Filters</button>
+              {/* <div className="dropdown-menu dropdown-menu-right">
                                 <form className="m-3">
                                     <div className="form-group">
                                         <label for="price" className="form-label">Price</label>
@@ -44,6 +52,7 @@ function Header() {
                                 <input type="reset" className="form-control" id="filterReset"/>
                                 <button className="dropdown-item" type="button">Save</button>
                                 <button className="dropdown-item" type="button">Reset</button>
+<<<<<<< HEAD
                             </div>
                         </div>
                     </div>
@@ -59,3 +68,24 @@ function Header() {
 }
 
 export default Header
+=======
+                            </div> */}
+            </div>
+          </div>
+          <div className="col d-flex align-items-center justify-content-end">
+            {/* Login */}
+            <button type="button" className="btn btn-secondary">
+              Sign up
+            </button>
+            <button type="button" className="btn btn-primary">
+              Log in
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+>>>>>>> origin/filterbug
