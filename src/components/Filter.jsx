@@ -5,7 +5,7 @@ function Filter() {
     <div
       className="modal fade"
       id="exampleModal"
-      tabindex="-1"
+      tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
@@ -35,7 +35,7 @@ function Filter() {
                     name="price"
                     id="price1"
                   />
-                  <label className="form-check-label" for="price1">
+                  <label className="form-check-label" htmlFor="price1">
                     &lt;$500
                   </label>
                 </div>
@@ -47,7 +47,7 @@ function Filter() {
                     name="price"
                     id="price2"
                   />
-                  <label className="form-check-label" for="price2">
+                  <label className="form-check-label" htmlFor="price2">
                     $500-$1500
                   </label>
                 </div>
@@ -59,7 +59,7 @@ function Filter() {
                     name="price"
                     id="price3"
                   />
-                  <label className="form-check-label" for="price3">
+                  <label className="form-check-label" htmlFor="price3">
                     &gt;$1500
                   </label>
                 </div>
@@ -76,7 +76,7 @@ function Filter() {
                     name="typehouse"
                     id="typehouse1"
                   />
-                  <label className="form-check-label" for="typehouse1">
+                  <label className="form-check-label" htmlFor="typehouse1">
                     Home
                   </label>
                 </div>
@@ -88,7 +88,7 @@ function Filter() {
                     name="typehouse"
                     id="typehouse2"
                   />
-                  <label className="form-check-label" for="typehouse2">
+                  <label className="form-check-label" htmlFor="typehouse2">
                     Apartment
                   </label>
                 </div>
@@ -100,7 +100,7 @@ function Filter() {
                     name="typehouse"
                     id="typehouse3"
                   />
-                  <label className="form-check-label" for="typehouse3">
+                  <label className="form-check-label" htmlFor="typehouse3">
                     Hotel
                   </label>
                 </div>
@@ -118,7 +118,7 @@ function Filter() {
                       name="amenity"
                       id="amenity1"
                     />
-                    <label className="form-check-label" for="amenity1">
+                    <label className="form-check-label" htmlFor="amenity1">
                       Kitchen
                     </label>
                   </div>
@@ -130,7 +130,7 @@ function Filter() {
                       name="amenity"
                       id="amenity2"
                     />
-                    <label className="form-check-label" for="amenity2">
+                    <label className="form-check-label" htmlFor="amenity2">
                       Washer
                     </label>
                   </div>
@@ -142,7 +142,7 @@ function Filter() {
                       name="amenity"
                       id="amenity3"
                     />
-                    <label className="form-check-label" for="amenity3">
+                    <label className="form-check-label" htmlFor="amenity3">
                       Dryer
                     </label>
                   </div>
@@ -154,7 +154,7 @@ function Filter() {
                       name="amenity"
                       id="amenity4"
                     />
-                    <label className="form-check-label" for="amenity4">
+                    <label className="form-check-label" htmlFor="amenity4">
                       Wifi
                     </label>
                   </div>
@@ -166,7 +166,7 @@ function Filter() {
                       name="amenity"
                       id="amenity5"
                     />
-                    <label className="form-check-label" for="amenity5">
+                    <label className="form-check-label" htmlFor="amenity5">
                       Heating
                     </label>
                   </div>
@@ -178,14 +178,14 @@ function Filter() {
                       name="amenity"
                       id="amenity6"
                     />
-                    <label className="form-check-label" for="amenity6">
+                    <label className="form-check-label" htmlFor="amenity6">
                       AirCondition
                     </label>
                   </div>
                 </div>
               </div>
               <div className="mb-3">
-                <label for="guests" className="form-label fs-3 fw-bold">
+                <label htmlFor="guests" className="form-label fs-3 fw-bold">
                   Number of Guests
                 </label>
                 <input type="number" className="form-control" id="guests" name="guests" min="0"/>

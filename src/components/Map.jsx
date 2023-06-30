@@ -1,5 +1,5 @@
 import React from "react"
-import GoogleMapReact from "google-map-react"
+import GoogleMap from "google-maps-react-markers"
 import '../styles.css'
 import { Icon } from '@iconify/react'
 import locationIcon from '@iconify/icons-mdi/map-marker'
@@ -16,9 +16,9 @@ const Map = ({ location, zoomLevel }) => (
         <h2 className="map-h2">You are here</h2>
 
         <div className="google-map">
-            <GoogleMapReact
-                bootstrapURLKeys={{ key: "AIzaSyBekbznKP3ti4ZX3B34xIigzTz0MwRnMIQ" }}
-                defaultCenter={location}
+            <GoogleMap
+                apiKey={"AIzaSyBekbznKP3ti4ZX3B34xIigzTz0MwRnMIQ"}
+                defaultCenter={{ lat: location.lat, lng: location.lng }}
                 defaultZoom={zoomLevel}
             >
                 
@@ -27,7 +27,7 @@ const Map = ({ location, zoomLevel }) => (
                     lng={location.lng}
                     text="Current Location"
                 />
-            </GoogleMapReact>
+            </GoogleMap>
         </div>
     </div>
 )

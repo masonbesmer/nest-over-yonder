@@ -23,35 +23,32 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 function App() {
   const [count, setCount] = useState(0);
-  const [pos, setPos] = useState(null);
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setPos({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
-        }
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-  }, []);
+  // var pos = {{lat: 0.0, lng: 0.0}};
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         pos.lat = {position.coords.latitude},
+  //         pos.lng = {position.coords.longitude},
+  //       },
+  //       () => {
+  //         handleLocationError(true, infoWindow, map.getCenter());
+  //       }
+  //     );
+  //   } else {
+  //     // Browser doesn't support Geolocation
+  //     handleLocationError(false, infoWindow, map.getCenter());
+  //   }
+  // }, []);
 
   return (
     <BrowserRouter>
       <div className="App">
         <Header />
         <Map
-          location={[33.185755896934694, -96.80554467522724]}
+          location={{lat: 33.185755896934694, lng: -96.80554467522724}}
+          //location={pos}
           zoomLevel={15}
         />
-        TEST
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
