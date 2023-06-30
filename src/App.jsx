@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import image from "../public/house1/house1.png";
-import Map from "./components/Map";
+
 import Filter from "./components/Filter";
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -44,11 +44,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Header />
-        <Map
-          location={{lat: 33.185755896934694, lng: -96.80554467522724}}
-          //location={pos}
-          zoomLevel={15}
-        />
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
