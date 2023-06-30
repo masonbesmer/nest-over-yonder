@@ -5,23 +5,29 @@ import "react-bootstrap";
 import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js";
 
 function Header() {
-    function goHome() {
-        window.location.href = '/';
-    }
-    return (
+  function goHome() {
+    window.location.href = "/";
+  }
+  return (
     <header className="header">
       <div className="container-fluid">
         <div className="row">
           <div className="col d-flex align-items-center">
             <img
-              style={{cursor: "pointer" }}          
+              style={{ cursor: "pointer" }}
               className=" rounded header-img"
               src="../public/logo.png"
               alt="Nest Over Yonder Logo"
               onClick={goHome}
             />
             <div className="container">
-              <h1 className="header-title" style={{cursor: "pointer" }} onClick={goHome}>Nest Over Yonder</h1>
+              <h1
+                className="header-title"
+                style={{ cursor: "pointer" }}
+                onClick={goHome}
+              >
+                Nest Over Yonder
+              </h1>
             </div>
           </div>
           <div className="col d-flex align-items-center">
@@ -35,7 +41,14 @@ function Header() {
               Search
             </button>
             <div className="popup">
-              <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Filters</button>
+              <button
+                type="button"
+                className="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Filters
+              </button>
             </div>
           </div>
           <div className="col d-flex align-items-center justify-content-end">
