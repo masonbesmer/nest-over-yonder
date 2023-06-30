@@ -1,10 +1,11 @@
 .header {
-  background: #a4a39f;
+  background: #4b4a48;
   padding: 10px;
   position: fixed; /* TODO: filter modal on header doesn't work when this is on */
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 1000
 }
 
 .header-title {
@@ -40,17 +41,27 @@
   display: flex;
   justify-content: space-between;
 }
+
+.map{
+  width: auto;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .map-h2 {
-  text-transform: uppercase;
-  font-size: 1rem;
-  padding: 20px;
+
+  font-size: 2rem;
+  padding: 10px;
   padding-left: 10px;
   text-align: center;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
 }
 
 .google-map {
-  width: 100%;
-  height: 60vh;
+  width: 90vb;
+  height: 97vh;
+
 }
 
 .pin {
