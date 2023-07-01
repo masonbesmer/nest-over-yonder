@@ -1,8 +1,13 @@
 import React from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import "../styles.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import star from "../assets/star.svg";
+import Calendar from "@demark-pro/react-booking-calendar";
+import { Button } from "react-bootstrap";
+
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
@@ -14,6 +19,12 @@ const responsive = {
 function ListingPage() {
   const params = useParams();
   let listingData = null;
+
+  const reserved = [
+    { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 29) },
+  ];
+  const [selectedDates, setSelectedDates] = useState([]);
+  const handleChange = (e) => setSelectedDates(e);
 
   //database lookip using id
   if (params.id === "1") {
@@ -35,22 +46,31 @@ function ListingPage() {
     };
   }
 
-  const imgStyles = {
-    width: "500px",
-    height: "350px",
-  };
-
   return (
-    <div style={{ backgroundColor: "lightgrey" }}>
+    <div
+      style={{
+        backgroundColor: "lightgrey",
+        marginTop: "4rem",
+        padding: "10px",
+        height: "1000vh",
+      }}
+    >
       {listingData != null ? (
-        <div>
+        <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
           <div
             className="head"
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <h1>
-              {listingData.title} - ${listingData.price}
+            <h1
+              style={{
+                fontSize: "3.5rem",
+                fontFamily:
+                  '"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;',
+              }}
+            >
+              {listingData.title}
             </h1>
+
             <div
               style={{
                 marginRight: "10px",
@@ -60,12 +80,23 @@ function ListingPage() {
               }}
               className="rating_location"
             >
-              <h3> Rating: {listingData.rating}</h3>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={star}
+                  style={{
+                    height: "25px",
+                    width: "25px",
+                    marginRight: "5px",
+                    marginBottom: "5px",
+                  }}
+                />
+                <h3>{listingData.rating}</h3>
+              </div>
               <h3> {listingData.location}</h3>
             </div>
           </div>
 
-          <div>
+          <div className="carousel">
             <Carousel
               swipeable={false}
               draggable={false}
@@ -73,40 +104,69 @@ function ListingPage() {
               responsive={responsive}
               ssr={true} // means to render carousel on server-side.
               infinite={true}
-              autoPlaySpeed={1000}
+              autoPlaySpeed={5000}
               keyBoardControl={true}
               renderDotsOutside={false}
-              customTransition="all 1"
+              customTransition="transform 500ms ease-in-out"
               transitionDuration={500}
               containerClass="carousel-container"
               removeArrowOnDeviceType={["tablet", "mobile"]}
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px"
+              autoPlay={true}
             >
               <div>
                 <img
-                  style={imgStyles}
+                  className="imgListing"
                   src={listingData.photos.pic1}
                   alt={listingData.title}
                 />
               </div>
               <div>
                 <img
-                  style={imgStyles}
+                  className="imgListing"
                   src={listingData.photos.pic2}
                   alt={listingData.title}
                 />
               </div>
               <div>
                 <img
-                  style={imgStyles}
+                  className="imgListing"
                   src={listingData.photos.pic3}
                   alt={listingData.title}
                 />
               </div>
               <div>
                 <img
-                  style={imgStyles}
+                  className="imgListing"
+                  src={listingData.photos.pic4}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic1}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic2}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic3}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
                   src={listingData.photos.pic4}
                   alt={listingData.title}
                 />
@@ -114,17 +174,51 @@ function ListingPage() {
             </Carousel>
           </div>
 
-          <h2>
-            <u>Host Name</u>: {listingData.hostName}
-          </h2>
-          <div className="desc">
-            <h2>Description:</h2>
-            <p>{listingData.description}</p>
+          <div className="below-carousel">
+            <div className="listingprops">
+              <div>
+                <span style={{ fontSize: "4rem" }}>${listingData.price}</span>
+                <span style={{ fontSize: "2rem" }}> a night</span>
+              </div>
+
+              <h2>
+                {"Host: "}
+                <span style={{ fontWeight: "lighter" }}>
+                  {listingData.hostName}
+                </span>
+              </h2>
+
+              <div className="desc">
+                <h2>Description:</h2>
+                <p>{listingData.description}</p>
+              </div>
+              <Button>Book Now</Button>
+            </div>
+
+            <div className="calendar">
+              <Calendar
+                selected={selectedDates}
+                onChange={handleChange}
+                onOverbook={(e, err) => alert(err)}
+                disabled={(date, state) => !state.isSameMonth}
+                reserved={reserved}
+                variant="booking"
+                dateFnsOptions={{ weekStartsOn: 1 }}
+                range={true}
+              />
+            </div>
           </div>
         </div>
       ) : (
         <>
-          <h1 style={{ color: "red", alignSelf: "center", marginLeft: "20px" }}>
+          <h1
+            style={{
+              color: "red",
+              alignSelf: "center",
+              marginLeft: "20px",
+              marginTop: "20px",
+            }}
+          >
             ERROR: Not a valid listing
           </h1>
         </>

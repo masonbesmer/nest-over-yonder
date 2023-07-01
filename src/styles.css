@@ -5,7 +5,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000
+  z-index: 1000;
+  
 }
 
 .header-title {
@@ -36,12 +37,6 @@
 .listing-info {
   margin-left: 1rem;
 }
-
-.top_of_listing_page {
-  display: flex;
-  justify-content: space-between;
-}
-
 .map{
   width: auto;
   margin-right: 10px;
@@ -81,4 +76,32 @@
 
 .main {
   margin-top: 75px;
+}
+
+
+.imgListing{
+  width: 600px;
+  height: 450px;
+  border-radius: 10px;
+    
+}
+
+.carousel{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.below-carousel{
+  display: flex;
+  justify-content:center;
+}
+
+.calendar {
+  height: 100%;
+  width: 30%;
+  
+}
+
+.listingprops {
+  width: 50vb;
 }
