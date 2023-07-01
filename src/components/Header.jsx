@@ -3,6 +3,7 @@ import "../styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap";
 import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js";
+import { Link } from "react-router-dom";
 
 function Header() {
   function goHome() {
@@ -37,9 +38,12 @@ function Header() {
               placeholder="Search"
               aria-label="default input example"
             />
-            <button type="button" className="btn btn-primary">
-              Search
-            </button>
+            <Link to={"/search/1"}>
+              <button type="button" className="btn btn-primary">
+                Search
+              </button>
+            </Link>
+
             <div className="popup">
               <button
                 type="button"
