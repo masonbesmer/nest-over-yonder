@@ -1,7 +1,7 @@
 .header {
   background: #4b4a48;
   padding: 10px;
-  position: fixed; /* TODO: filter modal on header doesn't work when this is on */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
