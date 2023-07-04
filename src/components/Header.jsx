@@ -51,7 +51,7 @@ function Header() {
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
               >
-                Filters
+                <i class="bi bi-sliders"></i>
               </button>
             </div>
           </div>
