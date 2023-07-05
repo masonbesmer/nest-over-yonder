@@ -1,7 +1,18 @@
 import React from 'react'
 import '../styles.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-bootstrap";
+import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js";
+import Badge from 'react-bootstrap/Badge';
+
 
 import SearchListing from '../components/SearchListing'
+
+var priceLow = 80;
+var priceHigh = 100;
+var type = ['Home', 'Apartment'];
+var amenities = ['Kitchen', 'Washer', 'Dryer', 'Wifi', 'Heating', 'Air'];
+var guests = 0;
 
 const sampledescription = "The company itself is a very successful company. Let us accuse loosely, for the softness of the time softened by the duties, but the error is born in the pleasures of the body fall, please, the thing rightly desire, the greater times of pain?";
 
@@ -14,18 +25,41 @@ function SearchPage() {
             </div>
 
             {/* Bar to show filters selected */}
-            <div className="filter-bar" style={{ display: "flex", justifyContent: "space-evenly", backgroundColor: "whitesmoke", alignItems: "center", position: "fixed", width: "100%", height: "2.5rem"}}>
+            <div className="filter-bar" style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", backgroundColor: "whitesmoke", alignItems: "center", position: "fixed", width: "100%", height: "2.5rem"}}>
                 <div className="filter-price">
-                    <h7>Price: </h7>
+                    <Badge bg="secondary" style={{ fontSize: ".75rem" }}>
+                        Price
+                    </Badge>
+                    <Badge bg="info" style={{ fontSize: ".75rem" }}>
+                        $ {priceLow} - {priceHigh}
+                    </Badge>
                 </div>
-                <div className="filter-type">
-                    <h7>Type: </h7>
+                <div className="filter-type" style={{ display: "flex", flexDirection: "row" }}>
+                    <Badge bg="secondary" style={{ fontSize: ".75rem" }}>
+                        Type
+                    </Badge>
+                    <Badge bg="info" style={{ fontSize: ".75rem", display: "flex", flexDirection: "row" }}>
+                        {type.map((type, index) => 
+                            <div style={{ padding: "0px 10px" }}>{type}</div>)}
+                    </Badge>
+                    
                 </div>
-                <div className="filter-amenities">
-                    <h7>Amenities: </h7>
+                <div className="filter-amenities" style={{ display: "flex", flexDirection: "row" }}>
+                    <Badge bg="secondary" style={{ fontSize: ".75rem" }}>
+                        Amenities
+                    </Badge>
+                    <Badge bg="info" style={{ fontSize: ".75rem", display: "flex", flexDirection: "row" }}>
+                    {amenities.map((amenities, index) => 
+                        <div style={{ padding: "0px 10px" }}>{amenities}</div>)}
+                    </Badge>
                 </div>
                 <div className="filter-guests">
-                    <h7>Guest: </h7>
+                    <Badge bg="secondary" style={{ fontSize: ".75rem" }}>
+                        Guests
+                    </Badge>
+                    <Badge bg="info" style={{ fontSize: ".75rem" }}>
+                        {guests}
+                    </Badge>
                 </div>
             </div>
 
