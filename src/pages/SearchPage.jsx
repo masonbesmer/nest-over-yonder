@@ -27,37 +27,36 @@ function SearchPage() {
             {/* Bar to show filters selected */}
             <div className="filter-bar" style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", backgroundColor: "whitesmoke", alignItems: "center", position: "fixed", width: "100%", height: "2.5rem"}}>
                 <div className="filter-price">
-                    <Badge bg="info" style={{ fontSize: ".75rem" }}>
+                    <Badge bg="success" style={{ fontSize: ".75rem" }}>
                         Price
                     </Badge>
-                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", color: "black" }}>
+                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", color: "black", borderStyle: "solid", borderWidth: "1px" }}>
                         $ {priceLow} - {priceHigh}
                     </Badge>
                 </div>
                 <div className="filter-type" style={{ display: "flex", flexDirection: "row" }}>
-                    <Badge bg="info" style={{ fontSize: ".75rem" }}>
+                    <Badge bg="success" style={{ fontSize: ".75rem" }}>
                         Type
                     </Badge>
-                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", display: "flex", flexDirection: "row" }}>
+                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", display: "flex", flexDirection: "row", borderStyle: "solid", borderWidth: "1px" }}>
                         {type.map((type, index) => 
                             <div style={{ padding: "0px 10px" }}>{type}</div>)}
-                    </Badge>
-                    
+                    </Badge>                    
                 </div>
                 <div className="filter-amenities" style={{ display: "flex", flexDirection: "row" }}>
-                    <Badge bg="info" style={{ fontSize: ".75rem" }}>
+                    <Badge bg="success" style={{ fontSize: ".75rem" }}>
                         Amenities
                     </Badge>
-                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", display: "flex", flexDirection: "row" }}>
+                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", display: "flex", flexDirection: "row", borderStyle: "solid", borderWidth: "1px" }}>
                     {amenities.map((amenities, index) => 
                         <div style={{ padding: "0px 10px" }}>{amenities}</div>)}
                     </Badge>
                 </div>
                 <div className="filter-guests">
-                    <Badge bg="info" style={{ fontSize: ".75rem" }}>
+                    <Badge bg="success" style={{ fontSize: ".75rem" }}>
                         Guests
                     </Badge>
-                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem" }}>
+                    <Badge bg="light" text="dark" style={{ fontSize: ".75rem", borderStyle: "solid", borderWidth: "1px" }}>
                         {guests}
                     </Badge>
                 </div>
