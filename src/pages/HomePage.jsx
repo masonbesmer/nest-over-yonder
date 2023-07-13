@@ -1,11 +1,29 @@
 import React from "react";
 import Listing from "../components/Listing";
 import Map from "../components/Map";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const sampledescription =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus soluta nam mollitia tempore deleniti officiis vero error pariatur in a voluptatibus corporis incidunt, placeat, rem iure cupiditate, dolorum maiores tempora?";
 
 function HomePage() {
+  const [data, setData] = useState();
+  const getData = async () => {
+    try {
+      const res = await fetch(
+        "https://sheet.best/api/sheets/639b810f-9688-4a6f-a01c-0862abaeb8c7"
+      );
+      const apiData = await res.json();
+      setData(apiData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div
       style={{
@@ -15,35 +33,20 @@ function HomePage() {
       }}
     >
       <div className="listings">
-        <Listing
-          id="1"
-          src="../public/house1/house1.png"
-          title="Huge House"
-          description={sampledescription}
-          location="Lakewood, Texas"
-          price="$500"
-          rating="4.89"
-        />
-
-        <Listing
-          id="2"
-          src="../public/house1/house2.png"
-          title="Enormous House"
-          description={sampledescription}
-          location="Denton, Texas"
-          price="$500"
-          rating="4.59"
-        />
-
-        <Listing
-          id="3"
-          src="../public/house1/house3.png"
-          title="Humongous House"
-          description={sampledescription}
-          location="Plano, Texas"
-          price="$500"
-          rating="3.12"
-        />
+        {data?.slice(0, 3).map((listing) => {
+          //gathers only the first 3 elements
+          return (
+            <Listing
+              id={listing.ListId}
+              src={listing.ImgPath}
+              title={listing.Title}
+              description={listing.Description}
+              location={listing.Address}
+              price={listing.Price}
+              rating={listing.Rating}
+            />
+          );
+        })}
       </div>
       <Map
         location={{ lat: 33.185755896934694, lng: -96.80554467522724 }}

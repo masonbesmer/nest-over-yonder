@@ -11,6 +11,7 @@ import image from "../public/house1/house1.png";
 import Filter from "./components/Filter";
 import SearchPage from "./pages/SearchPage";
 import ErrorPage from "./pages/ErrorPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   // infoWindow.setPosition(pos);
@@ -34,6 +35,7 @@ function App() {
           <Route path="/search/:pattern" element={<SearchPage />} />
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
+          <Route path="/checkout/:id" element={<CheckoutPage />} />
         </Routes>
         <Filter />
       </div>
