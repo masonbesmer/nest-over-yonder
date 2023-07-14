@@ -3,6 +3,8 @@ import Listing from "./components/Listing";
 import HomePage from "./pages/HomePage";
 import ListingPage from "./pages/ListingPage";
 import Header from "./components/Header";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -34,6 +36,8 @@ function App() {
           <Route path="/search/:pattern" element={<SearchPage />} />
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
+          <Route path="/Login" element={<LoginPage />} />
+          <Route path="/Signup" element={<SignupPage />} />
         </Routes>
         <Filter />
       </div>
