@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const loginLink = "/Login";
 
+
 function Header() {
   function goHome() {
     window.location.href = "/";
@@ -41,9 +42,12 @@ function Header() {
               placeholder="Search"
               aria-label="default input example"
             />
-            <button type="button" className="btn btn-primary">
-              Search
-            </button>
+            <Link to={"/search/1"}>
+              <button type="button" className="btn btn-primary">
+                Search
+              </button>
+            </Link>
+
             <div className="popup">
               <button
                 type="button"

@@ -11,6 +11,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import image from "../public/house1/house1.png";
 
 import Filter from "./components/Filter";
+import SearchPage from "./pages/SearchPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   // infoWindow.setPosition(pos);
@@ -25,30 +27,14 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 function App() {
   const [count, setCount] = useState(0);
-  // var pos = {{lat: 0.0, lng: 0.0}};
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         pos.lat = {position.coords.latitude},
-  //         pos.lng = {position.coords.longitude},
-  //       },
-  //       () => {
-  //         handleLocationError(true, infoWindow, map.getCenter());
-  //       }
-  //     );
-  //   } else {
-  //     // Browser doesn't support Geolocation
-  //     handleLocationError(false, infoWindow, map.getCenter());
-  //   }
-  // }, []);
-
   return (
     <BrowserRouter>
       <div className="App">
         <Header />
-
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/search/:pattern" element={<SearchPage />} />
+          <Route path="/error" element={<ErrorPage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
           <Route path="/Login" element={<LoginPage />} />
           <Route path="/Signup" element={<SignupPage />} />
