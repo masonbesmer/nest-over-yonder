@@ -7,7 +7,6 @@ import "react-multi-carousel/lib/styles.css";
 import star from "../assets/star.svg";
 import Calendar from "@demark-pro/react-booking-calendar";
 import { Button } from "react-bootstrap";
-import { useEffect } from "react";
 
 const responsive = {
   desktop: {
@@ -16,10 +15,10 @@ const responsive = {
     slidesToSlide: 3, // optional, default to 1.
   },
 };
-const importAll = (r) => r.keys().map((key) => r(key).default);
 
 function ListingPage() {
   const params = useParams();
+  let listingData = null;
 
   const reserved = [
     { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 29) },
@@ -27,39 +26,25 @@ function ListingPage() {
   const [selectedDates, setSelectedDates] = useState([]);
   const handleChange = (e) => setSelectedDates(e);
 
-  const [data, setData] = useState();
   //database lookip using id
-  const getData = async () => {
-    try {
-      const res = await fetch(
-        "https://sheet.best/api/sheets/639b810f-9688-4a6f-a01c-0862abaeb8c7"
-      );
-      const apiData = await res.json();
-      setData(apiData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (params.id === "1") {
+    listingData = {
+      photos: {
+        pic1: "../public/house1/house1.png",
+        pic2: "../public/house1/house2.png",
+        pic3: "../public/house1/house3.png",
+        pic4: "../public/house1/house4.png",
+      },
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  let listing = data?.find((item) => item.ListId === params.id); //params.id is the id given in the browser url itself
-
-  let listingData = {
-    photos: listing?.ImgPath,
-    hostName: listing?.HostId,
-    title: listing?.Title,
-    description: listing?.Description,
-    price: listing?.Price,
-    rating: listing?.Rating,
-    location: listing?.Address,
-  };
-
-  const images = importAll(
-    require.context(listingData.photos, false, /\.(png|jpe?g|svg)$/)
-  );
+      hostName: "Bob Ross",
+      title: "Huge House",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem similique itaque perspiciatis quia exercitationem dolor eligendi sint autem ex iusto repudiandae quas, quam dolore pariatur culpa ipsam eaque tenetur consequuntur?",
+      price: "500",
+      rating: "4.89",
+      location: "Lakewood, Texas",
+    };
+  }
 
   return (
     <div
@@ -130,18 +115,62 @@ function ListingPage() {
               itemClass="carousel-item-padding-40-px"
               autoPlay={true}
             >
-              {images.map((listing, index) => {
-                return (
-                  <div>
-                    <img
-                      className="imgListing"
-                      src={listing}
-                      alt={listingData.title}
-                    />
-                  </div>
-                );
-              })}
-              ;
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic1}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic2}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic3}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic4}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic1}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic2}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic3}
+                  alt={listingData.title}
+                />
+              </div>
+              <div>
+                <img
+                  className="imgListing"
+                  src={listingData.photos.pic4}
+                  alt={listingData.title}
+                />
+              </div>
             </Carousel>
           </div>
 
