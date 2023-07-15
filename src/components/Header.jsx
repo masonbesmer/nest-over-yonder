@@ -60,16 +60,14 @@ function Header() {
             <div className="profile-dropdown-btn">
               {/* Person icon for dropdown menu */}
               <a className="btn btn-grey dropdown-toggle border-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle  fs-3 text-white"></i>
-                {/* <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16" color="skyblue">
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                </svg> */}
+                <i className="bi bi-person-circle  fs-3 text-white"></i>
               </a>
               {/* dropdown menu in which you can go to Login page and eventually the about page */}
               <ul className="dropdown-menu bg-secondary-subtle" color="grey" position="relative">
                 <li><a className="dropdown-item " href="/Login">Login/Signup</a></li>
+                {/*Account link*/} 
                 <li><a className="dropdown-item" href="#">About</a></li>
+                {/*Signout redirect/link*/}
               </ul>
             </div>
           </div>

@@ -1,18 +1,67 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
-// import { useState } from "react";
-// import { useParams } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 //Login function allows the user to input their email and password
 //in order to access account functionality
+const signLink = "/Signup"
 
-const signLink = "/signup"
-console.log("HI");
 function LoginPage() {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showMessage, setShowMessage] = useState(false);
+
+    const handleLogin = async () =>
+    {
+      // console.log("Form submitted");
+      try {
+        const response = await axios.get("http://localhost:4000/users");
+        const data = response.data;
+
+        for (const user of data) {
+          // Use 'user' to access current user in the loop
+          if (user.email === email && user.password === password) {
+            console.log("Login successful");
+            // redirect to the homepage
+            navigate("/");
+            console.log("AFter NAVIGATE--------------------------------------------------");
+          }
+        }
+    
+        // This code block will only execute if no matching user is found
+        console.error("Login failed, user:", email);
+        setShowMessage(true);
+        // handle login error, e.g., show an error message
+    
+      } catch (error) {
+        console.error("Error logging in:", error);
+        // handle login error, e.g., show an error message
+      }
+    };
+
   return (
     <div className="container pt-5 mt-5">
         <div className="row justify-content-center align-items-center">
-            <form name="login" action="test.html" method="post" className="col-6 border p-3 rounded">
+        {showMessage && (
+            <div
+              class="alert alert-danger show text-center"
+              role="alert"
+            >
+              Email and password do not match, One or both are incorrect! 
+              {/*-------------------------------------------------------FIX ME */}
+              {/* <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button> */}
+            </div>
+          )}
+            <form name="login"  method="post" className="col-6 border p-3 rounded">
+                <h1>Login</h1>
+                <br />
                 <div className="mb-3">
                 <label htmlFor="email" className="form-label">
                     Email address
@@ -24,6 +73,7 @@ function LoginPage() {
                     name="email"
                     aria-describedby="emailHelp"
                     required
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <div id="emailHelp" className="form-text">
                     We'll never share your email with anyone else.
@@ -39,15 +89,10 @@ function LoginPage() {
                     id="password"
                     name="password"
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 </div>
-                <div className="mb-3 form-check">
-                <input type="checkbox" className="form-check-input" id="rememberMe" />
-                <label className="form-check-label" htmlFor="rememberMe">
-                    Remember Me!
-                </label>
-                </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={handleLogin}>
                 Login
                 </button>
                 <br></br>
