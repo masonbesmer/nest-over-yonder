@@ -36,8 +36,8 @@ function App() {
           <Route path="/search/:pattern" element={<SearchPage />} />
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/Signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Filter />
       </div>
