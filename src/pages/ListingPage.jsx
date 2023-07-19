@@ -14,6 +14,7 @@ import area from "../assets/area.png";
 import audience from "../assets/audience.png";
 import bath from "../assets/bathtub.png";
 import bed from "../assets/bed.png";
+import { Link } from "react-router-dom";
 
 const responsive = {
   desktop: {
@@ -28,14 +29,10 @@ function ListingPage() {
   const [listingData, setListingData] = useState(null);
 
   const getListingData = async () => {
-    // console.log("Form submitted");
     try {
       const response = await axios.get("http://localhost:4000/listings");
       const data = response.data;
-      console.log(data);
       for (const listing of data) {
-        // Use 'user' to access current user in the loop
-        console.log(listing);
         if (listing.listId == params.id) {
           console.log("Listing found successful");
           setListingData(listing);
@@ -251,7 +248,9 @@ function ListingPage() {
                 dateFnsOptions={{ weekStartsOn: 1 }}
                 range={true}
               />
-              <Button>Book Now</Button>
+              <Link style={{ height: "100%" }} to="/checkout">
+                <Button style={{ height: "42vh" }}>Book Now</Button>
+              </Link>
             </div>
           </div>
         </div>
