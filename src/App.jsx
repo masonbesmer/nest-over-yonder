@@ -13,17 +13,6 @@ import SearchPage from "./pages/SearchPage";
 import ErrorPage from "./pages/ErrorPage";
 import CheckoutPage from "./pages/CheckoutPage";
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  // infoWindow.setPosition(pos);
-  // infoWindow.setContent(
-  //   browserHasGeolocation
-  //     ? "Error: The Geolocation service failed."
-  //     : "Error: Your browser doesn't support geolocation."
-  // );
-  // infoWindow.open(map);
-  console.log("uh oh stinky");
-}
-
 function App() {
   const [count, setCount] = useState(0);
   return (
@@ -36,7 +25,7 @@ function App() {
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/checkout/:id" element={<CheckoutPage />} />
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Filter />

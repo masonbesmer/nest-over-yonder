@@ -10,7 +10,6 @@ function HomePage() {
   const [listingArray, setListingArray] = useState(null);
 
   const getHomeData = async () => {
-    // console.log("Form submitted");
     try {
       const response = await axios.get("http://localhost:4000/listings");
       const data = response.data;

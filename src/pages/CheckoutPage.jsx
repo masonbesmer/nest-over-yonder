@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import "../css/CheckoutPage.css"; // Import the CSS file for styling
 import InputMask from "react-input-mask";
 import { Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const CheckoutPage = () => {
+  const params = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -13,8 +16,9 @@ const CheckoutPage = () => {
   const [cardCVV, setCardCVV] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [country, setCountry] = useState("");
+  const [chargePerNight, setChargePerNight] = useState("");
+
   // Set up the pricing variables and state
-  const chargePerNight = 150; // Made-up charge per night
   const cleaningFee = 50; // Made-up cleaning fee
   const serviceFee = 20; // Made-up service fee
   const taxRate = 0.1; // Made-up tax rate
@@ -22,12 +26,37 @@ const CheckoutPage = () => {
   const [totalNights, setTotalNights] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [listingArray, setListingArray] = useState(null);
+
+  const getCheckoutData = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/listings");
+      const data = response.data;
+      for (const listing of data) {
+        if (listing.listId == params.id) {
+          console.log("Listing found successful");
+          setListingArray(listing);
+          setChargePerNight(listing.price);
+        }
+      }
+      // This code block will only execute if no matching listing is found with that id
+    } catch (error) {
+      console.error("Error fetching listing ", error);
+      // handle login error, e.g., show an error message
+    }
+  };
+
+  useEffect(() => {
+    getCheckoutData();
+    setTotalNights(5);
+  }, []);
+
   useEffect(() => {
     // Calculate total price whenever totalNights changes
     const nightsPrice = totalNights * chargePerNight;
     const totalPrice = (nightsPrice + cleaningFee + serviceFee) * (1 + taxRate);
     setTotalPrice(totalPrice);
-  }, [totalNights]);
+  }, [chargePerNight, totalNights]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,7 +65,6 @@ const CheckoutPage = () => {
     console.log("Name:", name);
     console.log("Email:", email);
     console.log("Address:", address);
-    console.log("Payment Method:", paymentMethod);
     console.log("Total Nights:", totalNights);
     console.log("Total Price:", totalPrice);
     // Reset form fields
@@ -49,19 +77,25 @@ const CheckoutPage = () => {
     setCardCVV("");
   };
 
+  let img1, img2;
+  if (listingArray) {
+    img1 = listingArray.imgPath + "/1.png";
+    img2 = listingArray.imgPath + "/2.png";
+  }
+
   return (
     <div className="checkout-container">
       <div className="checkout-summary">
         <div className="checkout-listing-details">
-          {/* Display the house listing details here */}
-          <img
-            src="../public/house1/house2.png"
-            alt="Listing"
-            className="checkout-listing-image"
-          />
-          <h2 className="checkout-listing-title">House Title</h2>
-          <p className="checkout-listing-location">Location</p>
-          <p className="checkout-listing-price">Price</p>
+          <img src={img2} alt="Listing" className="checkout-listing-image" />
+          <h2 className="checkout-listing-title">
+            {listingArray?.title} by{" "}
+            <span style={{ fontWeight: "lighter" }}>{listingArray?.host}</span>
+          </h2>
+          <p className="checkout-listing-location">{listingArray?.address}</p>
+          <p className="checkout-listing-price">
+            ${listingArray?.price} per night
+          </p>
         </div>
         <div className="checkout-payment-details">
           <h2>Your Trip</h2>
@@ -149,16 +183,12 @@ const CheckoutPage = () => {
       </div>
       <div className="checkout-listing-preview">
         {/* Display a small window of the house listing */}
-        <img
-          src="../public/house1/house1.png"
-          alt="Listing"
-          className="checkout-preview-image"
-        />
+        <img src={img1} alt="Listing" className="checkout-preview-image" />
         <div className="checkout-price-breakdown">
           <h2>Price Breakdown</h2>
           <p>
             <span>
-              ${chargePerNight.toFixed(2)} x {totalNights} nights
+              ${chargePerNight} x {totalNights} nights
             </span>
             <span>${(chargePerNight * totalNights).toFixed(2)}</span>
           </p>
@@ -172,7 +202,7 @@ const CheckoutPage = () => {
           </p>
           <p>
             <span>Tax Rate:</span>
-            <span>{(taxRate * 100).toFixed(2)}%</span>
+            <span>{taxRate * 100}%</span>
           </p>
         </div>
         <div className="checkout-preview-price">
