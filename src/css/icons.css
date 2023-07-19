@@ -1,0 +1,51 @@
+  
+  .property-detail-icon {
+    font-family: 'CustomIcons';
+  }
+  
+  .property-detail-icon::before {
+    content: attr(data-icon);
+    font-size: 24px;
+  }
+  .property-details {
+    margin-top: 2rem;
+  }
+  
+  .property-details-heading {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .property-details-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  
+  .property-detail {
+    display: flex;
+    align-items: center;
+  }
+  
+  .property-detail-icon {
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+  }
+  
+  .property-detail-text h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .property-detail-text p {
+    font-size: 1rem;
+    color: #666666;
+    margin: 0;
+  }
+  

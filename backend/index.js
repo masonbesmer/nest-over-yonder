@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from "cors";
+import { ObjectSchema } from 'yup';
+import { Double, Int32 } from 'mongodb';
 
 const app = express();
 const port = 4000;
@@ -38,6 +40,85 @@ mongoose.connect(uri, {
         password:{
             type: String,
             required: true,
+        },
+    });
+
+    const ListingSchema = new mongoose.Schema({
+        title: {
+            type: String,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        amenities: {
+            type: {
+                kitchen: Boolean,
+                washer: Boolean,
+                dryer: Boolean,
+                ac: Boolean,
+                wifi: Boolean,
+                heat: Boolean,
+                parking: Boolean,
+            },
+            required: false,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        host: {
+            type: String,
+            required: true,
+        },
+        hostId: {
+            type: Number,
+            required: true,
+        },
+        imgPath: {
+            type: String,
+            required: true,
+        },
+        price:{
+            type: Number,
+            required: true,
+        },
+        rating:{
+            type: Number,
+            required: true,
+        },
+        maxGuests:{
+            type: Number,
+            required: true,
+        },
+        type:{
+            type: String,
+            required: true,
+        },
+        listId:{
+            type: Number,
+            required: true,
+        },
+        reserved:{
+            type: Date,
+            required: false
+        },
+        bath:{
+            type: Number,
+            required: true
+        },
+        bed:{
+            type: Number,
+            required: true
+        },
+        area:{
+            type: Number,
+            required: false
         },
     });
 
@@ -83,6 +164,22 @@ app.get('/users', async (req, res) => {
         res.status(500).json({ message: 'Something went wrong'});
     }
 });
+
+//for Listings
+const Listing = mongoose.model('listing', UserSchema);
+app.get('/listings', async (req, res) => {
+    try{
+        const listings = await Listing.find({});
+
+        res.json(listings);
+    }
+    catch(error){
+        console.error('Error getting listings:', error);
+        res.status(500).json({ message: 'Something went wrong'});
+    }
+});
+
+
 
 // Start the server
 app.listen(port, () => {

@@ -7,6 +7,13 @@ import "react-multi-carousel/lib/styles.css";
 import star from "../assets/star.svg";
 import Calendar from "@demark-pro/react-booking-calendar";
 import { Button } from "react-bootstrap";
+import { useEffect } from "react";
+import axios from "axios";
+import "../css/icons.css";
+import area from "../assets/area.png";
+import audience from "../assets/audience.png";
+import bath from "../assets/bathtub.png";
+import bed from "../assets/bed.png";
 
 const responsive = {
   desktop: {
@@ -18,7 +25,33 @@ const responsive = {
 
 function ListingPage() {
   const params = useParams();
-  let listingData = null;
+  const [listingData, setListingData] = useState(null);
+
+  const getListingData = async () => {
+    // console.log("Form submitted");
+    try {
+      const response = await axios.get("http://localhost:4000/listings");
+      const data = response.data;
+      console.log(data);
+      for (const listing of data) {
+        // Use 'user' to access current user in the loop
+        console.log(listing);
+        if (listing.listId == params.id) {
+          console.log("Listing found successful");
+          setListingData(listing);
+        }
+      }
+
+      // This code block will only execute if no matching listing is found with that id
+    } catch (error) {
+      console.error("Error fetching listing ", error);
+      // handle login error, e.g., show an error message
+    }
+  };
+
+  useEffect(() => {
+    getListingData();
+  }, []);
 
   const reserved = [
     { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 29) },
@@ -26,24 +59,11 @@ function ListingPage() {
   const [selectedDates, setSelectedDates] = useState([]);
   const handleChange = (e) => setSelectedDates(e);
 
-  //database lookip using id
-  if (params.id === "1") {
-    listingData = {
-      photos: {
-        pic1: "../public/house1/house1.png",
-        pic2: "../public/house1/house2.png",
-        pic3: "../public/house1/house3.png",
-        pic4: "../public/house1/house4.png",
-      },
-
-      hostName: "Bob Ross",
-      title: "Huge House",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem similique itaque perspiciatis quia exercitationem dolor eligendi sint autem ex iusto repudiandae quas, quam dolore pariatur culpa ipsam eaque tenetur consequuntur?",
-      price: "500",
-      rating: "4.89",
-      location: "Lakewood, Texas",
-    };
+  let imageArray = [];
+  if (listingData != null) {
+    for (let i = 1; i <= 4; ++i) {
+      imageArray.push(listingData?.imgPath + "/" + i + ".png");
+    }
   }
 
   return (
@@ -52,11 +72,16 @@ function ListingPage() {
         backgroundColor: "lightgrey",
         marginTop: "4rem",
         padding: "10px",
-        height: "1000vh",
       }}
     >
       {listingData != null ? (
-        <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+        <div
+          style={{
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            alignItems: "center",
+          }}
+        >
           <div
             className="head"
             style={{ display: "flex", justifyContent: "space-between" }}
@@ -92,7 +117,7 @@ function ListingPage() {
                 />
                 <h3>{listingData.rating}</h3>
               </div>
-              <h3> {listingData.location}</h3>
+              <h3> {listingData.city}</h3>
             </div>
           </div>
 
@@ -115,62 +140,30 @@ function ListingPage() {
               itemClass="carousel-item-padding-40-px"
               autoPlay={true}
             >
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic1}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic2}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic3}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic4}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic1}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic2}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic3}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic4}
-                  alt={listingData.title}
-                />
-              </div>
+              {imageArray.map((srcImg) => {
+                return (
+                  <div>
+                    <img
+                      className="imgListing"
+                      src={srcImg}
+                      alt={listingData.title}
+                      key="${srcImg}"
+                    />
+                  </div>
+                );
+              })}
+              {imageArray.map((srcImg) => {
+                return (
+                  <div>
+                    <img
+                      className="imgListing"
+                      src={srcImg}
+                      alt={listingData.title}
+                      key="${srcImg}"
+                    />
+                  </div>
+                );
+              })}
             </Carousel>
           </div>
 
@@ -184,7 +177,7 @@ function ListingPage() {
               <h2>
                 {"Host: "}
                 <span style={{ fontWeight: "lighter" }}>
-                  {listingData.hostName}
+                  {listingData.host}
                 </span>
               </h2>
 
@@ -192,7 +185,59 @@ function ListingPage() {
                 <h2>Description:</h2>
                 <p>{listingData.description}</p>
               </div>
-              <Button>Book Now</Button>
+              <Button>Take a VR Tour</Button>
+              <div className="amenities">
+                <h2>Amenities:</h2>
+                <ul>
+                  {listingData.amenities &&
+                    Object.entries(listingData.amenities).map(
+                      ([key, value]) =>
+                        value && (
+                          <li key={key}>
+                            {key.charAt(0).toUpperCase() +
+                              key.slice(1).replace(/([A-Z])/g, " $1")}
+                          </li>
+                        )
+                    )}
+                </ul>
+              </div>
+              <div className="max-occupancy">
+                <h2>Max Occupancy:</h2>
+                <p>{listingData.maxGuests} guests</p>
+              </div>
+              <div className="property-details">
+                <h2 className="property-details-heading">Property Details</h2>
+                <div className="property-details-content">
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={bed} />
+                    <div className="property-detail-text">
+                      <h3>Beds</h3>
+                      <p>{listingData.bed}</p>
+                    </div>
+                  </div>
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={bath} />
+                    <div className="property-detail-text">
+                      <h3>Baths</h3>
+                      <p>{listingData.bath}</p>
+                    </div>
+                  </div>
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={area} />
+                    <div className="property-detail-text">
+                      <h3>Square Footage</h3>
+                      <p>{listingData.area} sqft</p>
+                    </div>
+                  </div>
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={audience} />
+                    <div className="property-detail-text">
+                      <h3>Guests</h3>
+                      <p>{listingData.maxGuests}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="calendar">
@@ -206,21 +251,22 @@ function ListingPage() {
                 dateFnsOptions={{ weekStartsOn: 1 }}
                 range={true}
               />
+              <Button>Book Now</Button>
             </div>
           </div>
         </div>
       ) : (
         <>
-          <h1
+          <h3
             style={{
-              color: "red",
+              color: "blue",
               alignSelf: "center",
-              marginLeft: "20px",
-              marginTop: "20px",
+              marginLeft: "10px",
+              marginTop: "10px",
             }}
           >
-            ERROR: Not a valid listing
-          </h1>
+            Loading, please wait.
+          </h3>
         </>
       )}
     </div>

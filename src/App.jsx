@@ -8,11 +8,10 @@ import SignupPage from "./pages/SignupPage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import image from "../public/house1/house1.png";
-
 import Filter from "./components/Filter";
 import SearchPage from "./pages/SearchPage";
 import ErrorPage from "./pages/ErrorPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   // infoWindow.setPosition(pos);
@@ -37,6 +36,7 @@ function App() {
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Filter />
