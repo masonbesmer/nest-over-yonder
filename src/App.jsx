@@ -12,6 +12,7 @@ import Filter from "./components/Filter";
 import SearchPage from "./pages/SearchPage";
 import ErrorPage from "./pages/ErrorPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import Footer from "./components/Footer";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Filter />
+        <Footer />
       </div>
     </BrowserRouter>
   );

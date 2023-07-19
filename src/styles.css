@@ -110,3 +110,17 @@
 .amenities {
   margin-top: 10px;
 }
+
+.footer {
+  background-color: #e41212;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.text {
+  color: #000000;
+  font-size: 14px;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Listing from "../components/Listing";
 import Map from "../components/Map";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 const sampleDescription =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus soluta nam mollitia tempore deleniti officiis vero error pariatur in a voluptatibus corporis incidunt, placeat, rem iure cupiditate, dolorum maiores tempora?";
