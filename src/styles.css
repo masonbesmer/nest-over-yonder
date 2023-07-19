@@ -112,15 +112,20 @@
 }
 
 .footer {
-  background-color: #e41212;
+  background-color: #c6c6c6a6;
   height: 100px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  justify-content: space-between;
+  padding: 0 300px; /* Add padding to create space from edges */
 }
 
 .text {
+  color: #000000;
+  font-size: 14px;
+}
+
+.support-link {
   color: #000000;
   font-size: 14px;
 }

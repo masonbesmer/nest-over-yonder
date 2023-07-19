@@ -4,9 +4,8 @@ import "../styles.css";
 const Footer = () => {
   return (
     <footer className="footer">
-      <div className="container">
-        <span className="text">© 2023 Your Company. All rights reserved.</span>
-      </div>
+      <span className="text">© 2023 Nest Over Yonder. All rights reserved.</span>
+      <a href="https://google.com" className="support-link">Support</a>
     </footer>
   );
 };
