@@ -3,7 +3,7 @@ import Listing from "../components/Listing";
 import Map from "../components/Map";
 import axios from "axios";
 
-const sampledescription =
+const sampleDescription =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus soluta nam mollitia tempore deleniti officiis vero error pariatur in a voluptatibus corporis incidunt, placeat, rem iure cupiditate, dolorum maiores tempora?";
 
 function HomePage() {
@@ -24,6 +24,26 @@ function HomePage() {
   useEffect(() => {
     getHomeData();
   }, []);
+
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      console.log("Geolocation not supported");
+    }
+  }, []);
+
+  function success(position) {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  }
+
+  function error() {
+    console.log("Unable to retrieve your location");
+  }
 
   return (
     <div
@@ -52,11 +72,11 @@ function HomePage() {
           );
         })}
       </div>
-      <Map
-        location={{ lat: 33.185755896934694, lng: -96.80554467522724 }}
-        //location={pos}
-        zoomLevel={15}
-      />
+      {latitude !== 0 && longitude !== 0 ? (
+        <Map location={{ lat: latitude, lng: longitude }} zoomLevel={15} />
+      ) : (
+        <p>Loading map...</p>
+      )}
     </div>
   );
 }
