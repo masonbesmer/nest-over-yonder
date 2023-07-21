@@ -24,9 +24,8 @@ const CheckoutPage = () => {
   }, [location.search]);
 
   //
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState("Buster Baxter");
+  const [email, setEmail] = useState("baxterbuster@gmail.com");
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
   const [cardExpiration, setCardExpiration] = useState("");
@@ -53,6 +52,8 @@ const CheckoutPage = () => {
         if (listing.listId == params.id) {
           setListingArray(listing);
           setChargePerNight(listing.price);
+          setName("Buster Bax");
+          setEmail("baxthegreat@gmail.com");
         }
       }
       // This code block will only execute if no matching listing is found with that id
@@ -73,19 +74,42 @@ const CheckoutPage = () => {
     setTotalPrice(totalPrice);
   }, [chargePerNight, totalNights]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const bookingData = {
+      name: name,
+      email: email,
+      cardNum: cardNumber,
+      cardExp: cardExpiration,
+      cardCVV: cardCVV,
+      zipCode: zipCode,
+      country: country,
+      startDate: checkInDate ? checkInDate.toISOString() : null,
+      endDate: checkOutDate ? checkOutDate.toISOString() : null,
+      totalNights: totalNights,
+      totalPrice: totalPrice,
+      listId: params.id,
+      transactionId: null,
+      userId: null,
+      hostId: null,
+    };
+
     // Perform checkout logic here, e.g., submit the form data to an API
-    console.log("Submitted!");
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Address:", address);
-    console.log("Total Nights:", totalNights);
-    console.log("Total Price:", totalPrice);
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/newtransaction",
+        bookingData
+      ); //sends data to db
+      console.log("Transaction Completed Successfully");
+    } catch (error) {
+      console.log(error.response);
+      console.log("Error completing transaction in CheckoutPage:", error);
+    }
+
     // Reset form fields
     setName("");
     setEmail("");
-    setAddress("");
     setCardNumber("");
     setCardName("");
     setCardExpiration("");
