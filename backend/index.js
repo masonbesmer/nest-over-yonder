@@ -104,10 +104,10 @@ mongoose.connect(uri, {
             type: Number,
             required: true,
         },
-        reserved:{
-            type: Date,
-            required: false
-        },
+        reservedDates:[{
+            startDate: { type: Date, required: false },
+            endDate: { type: Date, required: false }
+        }],
         bath:{
             type: Number,
             required: true
@@ -120,6 +120,70 @@ mongoose.connect(uri, {
             type: Number,
             required: false
         },
+    });
+
+    const TransactionSchema = new mongoose.Schema({
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        cardNum:{
+            type: String,
+            required: true,
+        },
+        cardExp: {
+            type: String,
+            required: true,
+        },
+        cardCVV:{
+            type: Number,
+            required: true,
+        },
+        zipCode:{
+            type: Number,
+            required: true,
+        },
+        country: {
+            type: String,
+            required: true,
+        },
+        startDate: {
+            type: String,
+            required: true,
+        },
+        endDate: {
+            type: String,
+            required: true,
+        },
+        totalNights: {
+            type: Number,
+            required: true,
+        },
+        totalPrice: {
+            type: Number,
+            required: true,
+        },
+        listId:{
+            type: Number,
+            required: true,
+        },
+        transactionId:{
+            type: Number,
+            required: false,
+        },
+        userId:{
+            type: Number,
+            required: false,
+        },
+        hostId: {
+            type: Number,
+            required: false,
+        },
+       
     });
 
 // Create User model
@@ -166,7 +230,7 @@ app.get('/users', async (req, res) => {
 });
 
 //for Listings
-const Listing = mongoose.model('listing', UserSchema);
+const Listing = mongoose.model('listing', ListingSchema);
 app.get('/listings', async (req, res) => {
     try{
         const listings = await Listing.find({});
@@ -179,6 +243,43 @@ app.get('/listings', async (req, res) => {
     }
 });
 
+//for Transactions
+const Transaction = mongoose.model('transaction', TransactionSchema);
+
+app.post('/newtransaction', async(req, res)=>{
+    try{
+        const { name, email,  cardNum, cardExp, cardCVV, zipCode, country,  startDate, endDate, totalNights, totalPrice, listId, transactionId, userId, hostId} = req.body;
+        // Create new transaction
+        const newTransaction = new Transaction({name, email,  cardNum, cardExp, cardCVV, zipCode, country,  startDate, endDate, totalNights, totalPrice, listId, transactionId, userId, hostId});
+        await newTransaction.save();
+
+        // const listIdInt = parseInt(listId);
+        // const listing = await Listing.findOne({ listId: listIdInt });
+        // if (!listing) {
+        //     return res.status(404).json({ message: 'Listing not found' });
+        // }
+        // listing.reservedDates.push(new Date(startDate), new Date(endDate));
+        // await listing.save();
+
+        res.status(201).json({ message: 'Transaction completed successfully' });
+    }
+    catch(error){
+        console.log('Error confirming transaction:', error);
+        res.status(500).json({ message: 'Something went wrong' });
+    }
+});
+
+app.get('/transactions', async (req, res) => {
+    try{
+        const transactions = await Transaction.find({});
+
+        res.json(transactions);
+    }
+    catch(error){
+        console.error('Error getting transactions:', error);
+        res.status(500).json({ message: 'Something went wrong'});
+    }
+});
 
 
 // Start the server

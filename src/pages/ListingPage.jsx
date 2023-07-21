@@ -53,11 +53,44 @@ function ListingPage() {
 
   const checkoutLink = "/checkout/" + params.id;
 
-  const reserved = [
-    { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 23) },
-    { startDate: new Date(2023, 6, 27), endDate: new Date(2023, 6, 30) },
-    { startDate: new Date(2023, 7, 2), endDate: new Date(2023, 7, 3) },
-  ];
+  const cleanAmenities = (amenities) => {
+    const { _id, ...cleanedAmenities } = amenities;
+    return cleanedAmenities;
+  };
+
+  let reserved = [];
+  function removeIdPropertyFromArray(arrayOfObjects) {
+    return arrayOfObjects.map(({ _id, ...rest }) => rest);
+  }
+
+  function formatDate(arrayOfObjects) {
+    return arrayOfObjects.map((obj) => ({
+      ...obj,
+      startDate: formatDateToString(obj.startDate),
+      endDate: formatDateToString(obj.endDate),
+    }));
+  }
+  function formatDateToString(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}, ${month}, ${day}`;
+  }
+
+  function convertToDates(inputArray) {
+    return inputArray.map((obj) => ({
+      startDate: new Date(obj.startDate),
+      endDate: new Date(obj.endDate),
+    }));
+  }
+
+  if (listingData) {
+    reserved = convertToDates(
+      formatDate(removeIdPropertyFromArray(listingData.reservedDates))
+    );
+  }
+
   const [selectedDates, setSelectedDates] = useState([]);
   const handleChange = (e) => setSelectedDates(e);
 
@@ -204,7 +237,7 @@ function ListingPage() {
                 <h2>Amenities:</h2>
                 <ul>
                   {listingData.amenities &&
-                    Object.entries(listingData.amenities).map(
+                    Object.entries(cleanAmenities(listingData.amenities)).map(
                       ([key, value]) =>
                         value && (
                           <li key={key}>
