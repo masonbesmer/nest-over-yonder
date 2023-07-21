@@ -15,6 +15,7 @@ import audience from "../assets/audience.png";
 import bath from "../assets/bathtub.png";
 import bed from "../assets/bed.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const responsive = {
   desktop: {
@@ -27,6 +28,7 @@ const responsive = {
 function ListingPage() {
   const params = useParams();
   const [listingData, setListingData] = useState(null);
+  const navigateTo = useNavigate();
 
   const getListingData = async () => {
     try {
@@ -34,7 +36,6 @@ function ListingPage() {
       const data = response.data;
       for (const listing of data) {
         if (listing.listId == params.id) {
-          console.log("Listing found successful");
           setListingData(listing);
         }
       }
@@ -50,8 +51,12 @@ function ListingPage() {
     getListingData();
   }, []);
 
+  const checkoutLink = "/checkout/" + params.id;
+
   const reserved = [
-    { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 29) },
+    { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 23) },
+    { startDate: new Date(2023, 6, 27), endDate: new Date(2023, 6, 30) },
+    { startDate: new Date(2023, 7, 2), endDate: new Date(2023, 7, 3) },
   ];
   const [selectedDates, setSelectedDates] = useState([]);
   const handleChange = (e) => setSelectedDates(e);
@@ -62,6 +67,18 @@ function ListingPage() {
       imageArray.push(listingData?.imgPath + "/" + i + ".png");
     }
   }
+
+  const handleBookNow = () => {
+    if (selectedDates.length > 0) {
+      const selectedDatesString = encodeURIComponent(
+        JSON.stringify(selectedDates)
+      );
+      navigateTo(`/checkout/${params.id}?dates=${selectedDatesString}`);
+    } else {
+      // Show an alert or some indication to the user that they need to select dates first.
+      alert("Please select the dates you want to book.");
+    }
+  };
 
   return (
     <div
@@ -248,9 +265,10 @@ function ListingPage() {
                 dateFnsOptions={{ weekStartsOn: 1 }}
                 range={true}
               />
-              <Link style={{ height: "100%" }} to="/checkout">
-                <Button style={{ height: "42vh" }}>Book Now</Button>
-              </Link>
+
+              <Button onClick={handleBookNow} style={{ height: "42vh" }}>
+                Book Now
+              </Button>
             </div>
           </div>
         </div>

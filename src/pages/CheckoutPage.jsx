@@ -2,11 +2,28 @@ import React, { useState, useEffect } from "react";
 import "../css/CheckoutPage.css"; // Import the CSS file for styling
 import InputMask from "react-input-mask";
 import { Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 const CheckoutPage = () => {
   const params = useParams();
+  const location = useLocation();
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  useEffect(() => {
+    // Parse the "dates" URL parameter to retrieve the selectedDates data
+    const searchParams = new URLSearchParams(location.search);
+    const datesParam = searchParams.get("dates");
+
+    // If the dates parameter exists, parse it back to an array
+    if (datesParam) {
+      const decodedDates = decodeURIComponent(datesParam);
+      const parsedDates = JSON.parse(decodedDates);
+      setSelectedDates(parsedDates);
+    }
+  }, [location.search]);
+
+  //
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -34,7 +51,6 @@ const CheckoutPage = () => {
       const data = response.data;
       for (const listing of data) {
         if (listing.listId == params.id) {
-          console.log("Listing found successful");
           setListingArray(listing);
           setChargePerNight(listing.price);
         }
@@ -48,7 +64,6 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     getCheckoutData();
-    setTotalNights(5);
   }, []);
 
   useEffect(() => {
@@ -77,11 +92,30 @@ const CheckoutPage = () => {
     setCardCVV("");
   };
 
+  //Grabs two images
   let img1, img2;
   if (listingArray) {
     img1 = listingArray.imgPath + "/1.png";
     img2 = listingArray.imgPath + "/2.png";
   }
+  const [checkInDate, setCheckInDate] = useState(null);
+  const [checkOutDate, setCheckOutDate] = useState(null);
+
+  const calculateTotalNights = () => {
+    if (selectedDates.length > 0) {
+      let temp_check_in = new Date(selectedDates[0]);
+      let temp_check_out = new Date(selectedDates[1]);
+      const timeDiff = Math.abs(temp_check_in - temp_check_out);
+      const totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) - 1;
+      setTotalNights(totalNights);
+      setCheckInDate(temp_check_in);
+      setCheckOutDate(temp_check_out);
+    }
+  };
+
+  useEffect(() => {
+    calculateTotalNights();
+  }, [selectedDates]);
 
   return (
     <div className="checkout-container">
@@ -99,11 +133,15 @@ const CheckoutPage = () => {
         </div>
         <div className="checkout-payment-details">
           <h2>Your Trip</h2>
-
-          <p>Check-in Date: XX/XX/XXXX</p>
-          <p>Check-out Date: XX/XX/XXXX</p>
+          <p>
+            Check-in Date:{" "}
+            {checkInDate ? checkInDate.toLocaleDateString() : "N/A"}
+          </p>
+          <p>
+            Check-out Date:{" "}
+            {checkOutDate ? checkOutDate.toLocaleDateString() : "N/A"}
+          </p>
           <p>Total Nights: {totalNights}</p>
-          <p>Total Guests: XX</p>
           {/* Your trip details */}
           <h2>Payment Information</h2>
           <form onSubmit={handleSubmit} className="checkout-payment-form">
