@@ -20,6 +20,7 @@ mongoose.connect(uri, {
         console.log('Error connecting to database:', err);
     });
 
+    //schemas for databases
     const UserSchema = new mongoose.Schema({
         fname: {
             type: String,
@@ -105,8 +106,9 @@ mongoose.connect(uri, {
             required: true,
         },
         reservedDates:[{
-            startDate: { type: Date, required: false },
-            endDate: { type: Date, required: false }
+            startDate: { type: String, required: false },
+            endDate: { type: String, required: false },
+            _id: {type: String, required: false}
         }],
         bath:{
             type: Number,
@@ -246,20 +248,26 @@ app.get('/listings', async (req, res) => {
 //for Transactions
 const Transaction = mongoose.model('transaction', TransactionSchema);
 
+//API endpoint for posting a new transaction
 app.post('/newtransaction', async(req, res)=>{
     try{
+        //grab all the basic data
         const { name, email,  cardNum, cardExp, cardCVV, zipCode, country,  startDate, endDate, totalNights, totalPrice, listId, transactionId, userId, hostId} = req.body;
+
         // Create new transaction
         const newTransaction = new Transaction({name, email,  cardNum, cardExp, cardCVV, zipCode, country,  startDate, endDate, totalNights, totalPrice, listId, transactionId, userId, hostId});
         await newTransaction.save();
 
-        // const listIdInt = parseInt(listId);
-        // const listing = await Listing.findOne({ listId: listIdInt });
-        // if (!listing) {
-        //     return res.status(404).json({ message: 'Listing not found' });
-        // }
-        // listing.reservedDates.push(new Date(startDate), new Date(endDate));
-        // await listing.save();
+        //if transaction worked, then append the reserved dates to the relevant listing
+        const listIdInt = parseInt(listId);
+        const listing = await Listing.findOne({ listId: listIdInt });
+        if (!listing) {
+            return res.status(404).json({ message: 'Listing not found' });
+        }
+        //pushing dates to listing
+        listing.reservedDates.push({startDate: new Date(startDate), endDate: new Date(endDate)});
+        await listing.save();
+        
 
         res.status(201).json({ message: 'Transaction completed successfully' });
     }
@@ -269,6 +277,7 @@ app.post('/newtransaction', async(req, res)=>{
     }
 });
 
+//API endpoint for getting transactions
 app.get('/transactions', async (req, res) => {
     try{
         const transactions = await Transaction.find({});

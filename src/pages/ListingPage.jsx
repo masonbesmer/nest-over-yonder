@@ -18,19 +18,21 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const responsive = {
+  //for the image carousel
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 3,
-    slidesToSlide: 3, // optional, default to 1.
+    slidesToSlide: 3,
   },
 };
 
 function ListingPage() {
-  const params = useParams();
-  const [listingData, setListingData] = useState(null);
-  const navigateTo = useNavigate();
+  const params = useParams(); //to grab id from the url
+  const [listingData, setListingData] = useState(null); //listingData stores the JSON data for each listing
+  const navigateTo = useNavigate(); //used to navigate to other pages
 
   const getListingData = async () => {
+    //sends an API get request to grab the data for one relevant listing
     try {
       const response = await axios.get("http://localhost:4000/listings");
       const data = response.data;
@@ -39,31 +41,31 @@ function ListingPage() {
           setListingData(listing);
         }
       }
-
-      // This code block will only execute if no matching listing is found with that id
     } catch (error) {
+      // This code block will only execute if no matching listing is found with that id
       console.error("Error fetching listing ", error);
-      // handle login error, e.g., show an error message
     }
   };
 
   useEffect(() => {
+    //tells program to grab listing data once
     getListingData();
   }, []);
 
-  const checkoutLink = "/checkout/" + params.id;
-
   const cleanAmenities = (amenities) => {
+    //removing the "_id" value from the amenities array
     const { _id, ...cleanedAmenities } = amenities;
     return cleanedAmenities;
   };
 
+  //this following block is all code for grabbing the reserved listings data from the database, parsing it, and then updating the reserved array with it
   let reserved = [];
   function removeIdPropertyFromArray(arrayOfObjects) {
+    //removes the "_id" property from the array
     return arrayOfObjects.map(({ _id, ...rest }) => rest);
   }
-
   function formatDate(arrayOfObjects) {
+    //formats date to string
     return arrayOfObjects.map((obj) => ({
       ...obj,
       startDate: formatDateToString(obj.startDate),
@@ -71,36 +73,40 @@ function ListingPage() {
     }));
   }
   function formatDateToString(dateString) {
+    //called on by formatDate
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}, ${month}, ${day}`;
   }
-
   function convertToDates(inputArray) {
+    //final piece, converting it to the required format for the calendar
     return inputArray.map((obj) => ({
       startDate: new Date(obj.startDate),
       endDate: new Date(obj.endDate),
     }));
   }
-
   if (listingData) {
+    //this is where we call the functions for the reserved array
     reserved = convertToDates(
       formatDate(removeIdPropertyFromArray(listingData.reservedDates))
     );
   }
 
+  //code for the calendar, purpose is to allow user to select dates from it
   const [selectedDates, setSelectedDates] = useState([]);
   const handleChange = (e) => setSelectedDates(e);
 
+  //creates an imageArray that has the image paths for the house
   let imageArray = [];
   if (listingData != null) {
-    for (let i = 1; i <= 4; ++i) {
+    for (let i = 1; i <= 6; ++i) {
       imageArray.push(listingData?.imgPath + "/" + i + ".png");
     }
   }
 
+  //handles the booking process by passing data to the checkout page through url
   const handleBookNow = () => {
     if (selectedDates.length > 0) {
       const selectedDatesString = encodeURIComponent(
@@ -116,7 +122,7 @@ function ListingPage() {
   return (
     <div
       style={{
-        backgroundColor: "lightgrey",
+        backgroundColor: "#F4F7FF",
         marginTop: "4rem",
         padding: "10px",
       }}
@@ -169,6 +175,7 @@ function ListingPage() {
           </div>
 
           <div className="carousel">
+            {/* Carousel of images */}
             <Carousel
               swipeable={false}
               draggable={false}
@@ -187,18 +194,6 @@ function ListingPage() {
               itemClass="carousel-item-padding-40-px"
               autoPlay={true}
             >
-              {imageArray.map((srcImg) => {
-                return (
-                  <div>
-                    <img
-                      className="imgListing"
-                      src={srcImg}
-                      alt={listingData.title}
-                      key="${srcImg}"
-                    />
-                  </div>
-                );
-              })}
               {imageArray.map((srcImg) => {
                 return (
                   <div>
@@ -248,12 +243,9 @@ function ListingPage() {
                     )}
                 </ul>
               </div>
-              <div className="max-occupancy">
-                <h2>Max Occupancy:</h2>
-                <p>{listingData.maxGuests} guests</p>
-              </div>
+
               <div className="property-details">
-                <h2 className="property-details-heading">Property Details</h2>
+                <h2 className="property-details-heading">Property Details:</h2>
                 <div className="property-details-content">
                   <div className="property-detail">
                     <img className="property-detail-icon" src={bed} />
@@ -291,15 +283,13 @@ function ListingPage() {
               <Calendar
                 selected={selectedDates}
                 onChange={handleChange}
-                onOverbook={(e, err) => alert(err)}
-                disabled={(date, state) => !state.isSameMonth}
                 reserved={reserved}
                 variant="booking"
-                dateFnsOptions={{ weekStartsOn: 1 }}
+                dateFnsOptions={{ weekStartsOn: 0 }}
                 range={true}
               />
 
-              <Button onClick={handleBookNow} style={{ height: "42vh" }}>
+              <Button onClick={handleBookNow} style={{ height: "45vh" }}>
                 Book Now
               </Button>
             </div>
@@ -307,6 +297,7 @@ function ListingPage() {
         </div>
       ) : (
         <>
+          {/* If listingData has not been rendered yet, then show a loading screen */}
           <h3
             style={{
               color: "blue",
