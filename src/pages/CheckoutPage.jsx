@@ -6,8 +6,8 @@ import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 const CheckoutPage = () => {
-  const params = useParams();
-  const location = useLocation();
+  const params = useParams(); //used to grab the id from the url
+  const location = useLocation(); //used to grab the other data from the url
   const [selectedDates, setSelectedDates] = useState([]);
 
   useEffect(() => {
@@ -23,11 +23,9 @@ const CheckoutPage = () => {
     }
   }, [location.search]);
 
-  //
   const [name, setName] = useState("Buster Baxter");
   const [email, setEmail] = useState("baxterbuster@gmail.com");
   const [cardNumber, setCardNumber] = useState("");
-  const [cardName, setCardName] = useState("");
   const [cardExpiration, setCardExpiration] = useState("");
   const [cardCVV, setCardCVV] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -35,9 +33,9 @@ const CheckoutPage = () => {
   const [chargePerNight, setChargePerNight] = useState("");
 
   // Set up the pricing variables and state
-  const cleaningFee = 50; // Made-up cleaning fee
-  const serviceFee = 20; // Made-up service fee
-  const taxRate = 0.1; // Made-up tax rate
+  const cleaningFee = 50;
+  const serviceFee = 20;
+  const taxRate = 0.1;
 
   const [totalNights, setTotalNights] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -45,6 +43,7 @@ const CheckoutPage = () => {
   const [listingArray, setListingArray] = useState(null);
 
   const getCheckoutData = async () => {
+    //getting data about the listing that the user wants to book
     try {
       const response = await axios.get("http://localhost:4000/listings");
       const data = response.data;
@@ -75,6 +74,7 @@ const CheckoutPage = () => {
   }, [chargePerNight, totalNights]);
 
   const handleSubmit = async (e) => {
+    //handles the entire submit function
     e.preventDefault();
 
     const bookingData = {
@@ -95,7 +95,7 @@ const CheckoutPage = () => {
       hostId: null,
     };
 
-    // Perform checkout logic here, e.g., submit the form data to an API
+    // Perform checkout logic here, e.g., submit the form data to the API
     try {
       const response = await axios.post(
         "http://localhost:4000/newtransaction",
@@ -108,15 +108,14 @@ const CheckoutPage = () => {
     }
 
     // Reset form fields
-    setName("");
-    setEmail("");
     setCardNumber("");
-    setCardName("");
     setCardExpiration("");
     setCardCVV("");
+    setZipCode("");
+    setCountry("");
   };
 
-  //Grabs two images
+  //Grabs two images for showing
   let img1, img2;
   if (listingArray) {
     img1 = listingArray.imgPath + "/1.png";
@@ -126,6 +125,7 @@ const CheckoutPage = () => {
   const [checkOutDate, setCheckOutDate] = useState(null);
 
   const calculateTotalNights = () => {
+    //calculates the number of total nights
     if (selectedDates.length > 0) {
       let temp_check_in = new Date(selectedDates[0]);
       let temp_check_out = new Date(selectedDates[1]);
@@ -156,6 +156,7 @@ const CheckoutPage = () => {
           </p>
         </div>
         <div className="checkout-payment-details">
+          {/* Your trip details */}
           <h2>Your Trip</h2>
           <p>
             Check-in Date:{" "}
@@ -166,7 +167,7 @@ const CheckoutPage = () => {
             {checkOutDate ? checkOutDate.toLocaleDateString() : "N/A"}
           </p>
           <p>Total Nights: {totalNights}</p>
-          {/* Your trip details */}
+          {/* Payment Details */}
           <h2>Payment Information</h2>
           <form onSubmit={handleSubmit} className="checkout-payment-form">
             <div className="checkout-form-group">

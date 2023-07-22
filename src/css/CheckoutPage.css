@@ -1,8 +1,12 @@
+
+
 .checkout-container {
   display: flex;
   justify-content: space-between;
   margin: 20px;
   margin-top: 6rem;
+  
+  
 }
 
 .checkout-summary {

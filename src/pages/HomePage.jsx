@@ -11,6 +11,7 @@ function HomePage() {
   const [listingArray, setListingArray] = useState(null);
 
   const getHomeData = async () => {
+    //grabbing listing data from the database
     try {
       const response = await axios.get("http://localhost:4000/listings");
       const data = response.data;
@@ -47,37 +48,85 @@ function HomePage() {
   }
 
   return (
-    <div
-      style={{
-        marginTop: "4rem",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <div>
-        {listingArray?.slice(0, 3).map((listing) => {
-          //gathers only the first 3 elements
-          let imagePath = listing.imgPath + "/1.png";
-          return (
-            <div style={{ marginLeft: "1rem" }}>
-              <Listing
-                id={listing.listId}
-                src={imagePath}
-                title={listing.title}
-                description={listing.description}
-                location={listing.city}
-                price={listing.price}
-                rating={listing.rating}
-              />
-            </div>
-          );
-        })}
+    <div>
+      <div
+        style={{
+          marginTop: "4rem",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          {listingArray?.slice(0, 3).map((listing) => {
+            //gathers only the first 3 elements
+            let imagePath = listing.imgPath + "/1.png";
+            return (
+              <div style={{ marginLeft: "1rem" }}>
+                <Listing
+                  id={listing.listId}
+                  src={imagePath}
+                  title={listing.title}
+                  description={listing.description}
+                  location={listing.city}
+                  price={listing.price}
+                  rating={listing.rating}
+                />
+              </div>
+            );
+          })}
+        </div>
+        {latitude !== 0 && longitude !== 0 ? (
+          <Map location={{ lat: latitude, lng: longitude }} zoomLevel={15} />
+        ) : (
+          <p>Loading map...</p>
+        )}
       </div>
-      {latitude !== 0 && longitude !== 0 ? (
-        <Map location={{ lat: latitude, lng: longitude }} zoomLevel={15} />
-      ) : (
-        <p>Loading map...</p>
-      )}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <div st>
+          {listingArray?.slice(3, 6).map((listing) => {
+            //gathers only the first 3 elements
+            let imagePath = listing.imgPath + "/1.png";
+            return (
+              <div style={{ marginLeft: "1rem" }}>
+                <Listing
+                  id={listing.listId}
+                  src={imagePath}
+                  title={listing.title}
+                  description={listing.description}
+                  location={listing.city}
+                  price={listing.price}
+                  rating={listing.rating}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        <div>
+          {listingArray?.slice(6, 9).map((listing) => {
+            //gathers only the first 3 elements
+            let imagePath = listing.imgPath + "/1.png";
+            return (
+              <div style={{ marginLeft: "1rem" }}>
+                <Listing
+                  id={listing.listId}
+                  src={imagePath}
+                  title={listing.title}
+                  description={listing.description}
+                  location={listing.city}
+                  price={listing.price}
+                  rating={listing.rating}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
