@@ -54,7 +54,14 @@ function SignupPage() {
               class="alert alert-danger show text-center"
               role="alert"
             >
-              This email is aleady being used! Please try a different email!
+              This email is aleady being used! 
+              {/*-------------------------------------------------------FIX ME */}
+              {/* <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button> */}
             </div>
           )}
           {showForm && (
