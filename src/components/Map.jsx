@@ -60,17 +60,19 @@ function Map({zoomLevel}) {
 
       <div className="google-map">
       {listingCloaded && (userLatitude != 0) && (userLongitude != 0) ? (
-        <GoogleMap
-          apiKey={APIKey}
-          defaultCenter={{ lat: parseFloat(userLatitude), lng: parseFloat(userLongitude) }}
-          defaultZoom={zoomLevel}
-        >
-          {console.log("Listing Coordinates Array:", listingCArray)}
-          <LocationPin key={-1} lat={parseFloat(userLatitude)} lng={parseFloat(userLongitude)} text="Current Location" />
-          {listingCArray.map((listing) => (
-            <LocationPin key={listing.listId} lat={parseFloat(listing.coords.lat)} lng={parseFloat(listing.coords.lng)} text={listing.title}/>
-          ))}
-        </GoogleMap>
+        <div style = {{height: "100vh", width: "100%"}}>
+          <GoogleMap
+            apiKey={APIKey}
+            defaultCenter={{ lat: parseFloat(userLatitude), lng: parseFloat(userLongitude) }}
+            defaultZoom={zoomLevel}
+          >
+            {console.log("Listing Coordinates Array:", listingCArray)}
+            <LocationPin className="marker-pin" key={-1} lat={parseFloat(userLatitude)} lng={parseFloat(userLongitude)} text="Current Location" />
+            {listingCArray.map((listing) => (
+              <LocationPin key={listing.listId} lat={parseFloat(listing.coords.lat)} lng={parseFloat(listing.coords.lng)} text={listing.title}/>
+            ))}
+          </GoogleMap>
+        </div>
       ) : (
         <p>Loading...</p> // Placeholder for when data is being fetched
       )}
