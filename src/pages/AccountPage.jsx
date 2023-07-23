@@ -75,6 +75,7 @@ function AccountPage({ email }) {
                 <h2>User Profile</h2>
                 <p>Name: {userData.fname} {userData.lname}</p>
                 <p>Email: {userData.email} </p>
+                <p>Phone: {userData.phone} </p>
                 {/* Add more user profile details here */}
 
                 <h2>Change Password</h2>

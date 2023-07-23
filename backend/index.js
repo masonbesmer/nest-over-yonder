@@ -5,11 +5,11 @@ import session from "express-session";
 import passport from 'passport';
 import { serialize, parse } from 'cookie'
 import { Strategy as LocalStrategy } from 'passport-local';
-import { MAX_AGE, setTokenCookie, getTokenCookie } from './auth-cookies.js'
+import { MAX_AGE, setTokenCookie, getTokenCookie } from './auth-cookies.js' //for encryption (not used at the moment)
 
 const app = express();
 const port = 4000;
-// const TOKEN_SECRET = "this-is-a-secret-value-with-at-least-32-characters";
+// const TOKEN_SECRET = "this-is-a-secret-value-with-at-least-32-characters"; //for encryption (do not uncomment unless working on encryption)
 
 // Connect to MongoDB
 const uri = "mongodb+srv://Dylan:Dylan@cluster0.htbdf2m.mongodb.net/?retryWrites=true&w=majority";

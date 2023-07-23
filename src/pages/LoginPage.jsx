@@ -11,7 +11,7 @@ function LoginPage({ setAuthenticatedUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState(false); //shows message if user information is not correct
 
   const handleLogin = async () => {
     try {
@@ -52,14 +52,6 @@ function LoginPage({ setAuthenticatedUser }) {
         {showMessage && (
           <div className="alert alert-danger show text-center" role="alert">
             Email and password do not match, One or both are incorrect!
-            {/*-------------------------------------------------------FIX ME */}
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              onClick={setShowMessage(false)}
-            ></button>
           </div>
         )}
         <form name="login" method="post" className="col-6 border p-3 rounded">
