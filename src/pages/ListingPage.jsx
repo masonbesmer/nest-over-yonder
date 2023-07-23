@@ -65,7 +65,7 @@ function ListingPage() {
               style={{
                 fontSize: "3.5rem",
                 fontFamily:
-                  '"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;',
+                  '"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif',
               }}
             >
               {listingData.title}

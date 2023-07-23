@@ -105,3 +105,46 @@
 .listingprops {
   width: 50vb;
 }
+/*
+ .sidebar {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  left: 0;
+  top: 4.5rem;
+  padding-top: 50px;
+  background-color: rgb(56, 56, 56);
+}
+
+.sidebar div {
+  padding: 8px;
+  font-size: 24px;
+  display: block;
+  color: rgb(158, 92, 34)
+}
+
+.accountContent {
+  margin-left: 200px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+}
+
+.content h2 {
+  padding-right: 0px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.content h1 {
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-top: 30px;
+  font-weight: 600;
+  padding-bottom: 30px;
+} */

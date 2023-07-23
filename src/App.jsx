@@ -5,12 +5,17 @@ import ListingPage from "./pages/ListingPage";
 import Header from "./components/Header";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import AccountPage from "./pages/AccountPage";
+import AboutPage from "./pages/AboutPage";
+import axios from 'axios';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import image from "../public/house1/house1.png";
 
 import Filter from "./components/Filter";
+
+// const logged = false;
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   // infoWindow.setPosition(pos);
@@ -25,6 +30,18 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 function App() {
   const [count, setCount] = useState(0);
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
+
+  useEffect(() => {
+    
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setAuthenticatedUser(foundUser);
+    }
+
+  }, []); // <-- The empty dependency array ensures this effect runs only once
+
   // var pos = {{lat: 0.0, lng: 0.0}};
   //   if (navigator.geolocation) {
   //     navigator.geolocation.getCurrentPosition(
@@ -45,13 +62,15 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
+        <Header authenticatedUser={authenticatedUser} setAuthenticatedUser={setAuthenticatedUser}/>
 
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/listing/:id" element={<ListingPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage setAuthenticatedUser={setAuthenticatedUser} />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/Account" element={<AccountPage />} />
+          <Route path="/About" element={<AboutPage />} />
         </Routes>
         <Filter />
       </div>
