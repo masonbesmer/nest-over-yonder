@@ -7,56 +7,134 @@ import "react-multi-carousel/lib/styles.css";
 import star from "../assets/star.svg";
 import Calendar from "@demark-pro/react-booking-calendar";
 import { Button } from "react-bootstrap";
+import { useEffect } from "react";
+import axios from "axios";
+import "../css/icons.css";
+import area from "../assets/area.png";
+import audience from "../assets/audience.png";
+import bath from "../assets/bathtub.png";
+import bed from "../assets/bed.png";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const responsive = {
+  //for the image carousel
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 3,
-    slidesToSlide: 3, // optional, default to 1.
+    slidesToSlide: 3,
   },
 };
 
 function ListingPage() {
-  const params = useParams();
-  let listingData = null;
+  const params = useParams(); //to grab id from the url
+  const [listingData, setListingData] = useState(null); //listingData stores the JSON data for each listing
+  const navigateTo = useNavigate(); //used to navigate to other pages
 
-  const reserved = [
-    { startDate: new Date(2023, 6, 22), endDate: new Date(2023, 6, 29) },
-  ];
+  const getListingData = async () => {
+    //sends an API get request to grab the data for one relevant listing
+    try {
+      const response = await axios.get("http://localhost:4000/listings");
+      const data = response.data;
+      for (const listing of data) {
+        if (listing.listId == params.id) {
+          setListingData(listing);
+        }
+      }
+    } catch (error) {
+      // This code block will only execute if no matching listing is found with that id
+      console.error("Error fetching listing ", error);
+    }
+  };
+
+  useEffect(() => {
+    //tells program to grab listing data once
+    getListingData();
+  }, []);
+
+  const cleanAmenities = (amenities) => {
+    //removing the "_id" value from the amenities array
+    const { _id, ...cleanedAmenities } = amenities;
+    return cleanedAmenities;
+  };
+
+  //this following block is all code for grabbing the reserved listings data from the database, parsing it, and then updating the reserved array with it
+  let reserved = [];
+  function removeIdPropertyFromArray(arrayOfObjects) {
+    //removes the "_id" property from the array
+    return arrayOfObjects.map(({ _id, ...rest }) => rest);
+  }
+  function formatDate(arrayOfObjects) {
+    //formats date to string
+    return arrayOfObjects.map((obj) => ({
+      ...obj,
+      startDate: formatDateToString(obj.startDate),
+      endDate: formatDateToString(obj.endDate),
+    }));
+  }
+  function formatDateToString(dateString) {
+    //called on by formatDate
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}, ${month}, ${day}`;
+  }
+  function convertToDates(inputArray) {
+    //final piece, converting it to the required format for the calendar
+    return inputArray.map((obj) => ({
+      startDate: new Date(obj.startDate),
+      endDate: new Date(obj.endDate),
+    }));
+  }
+  if (listingData) {
+    //this is where we call the functions for the reserved array
+    reserved = convertToDates(
+      formatDate(removeIdPropertyFromArray(listingData.reservedDates))
+    );
+  }
+
+  //code for the calendar, purpose is to allow user to select dates from it
   const [selectedDates, setSelectedDates] = useState([]);
   const handleChange = (e) => setSelectedDates(e);
 
-  //database lookip using id
-  if (params.id === "1") {
-    listingData = {
-      photos: {
-        pic1: "../public/house1/house1.png",
-        pic2: "../public/house1/house2.png",
-        pic3: "../public/house1/house3.png",
-        pic4: "../public/house1/house4.png",
-      },
-
-      hostName: "Bob Ross",
-      title: "Huge House",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem similique itaque perspiciatis quia exercitationem dolor eligendi sint autem ex iusto repudiandae quas, quam dolore pariatur culpa ipsam eaque tenetur consequuntur?",
-      price: "500",
-      rating: "4.89",
-      location: "Lakewood, Texas",
-    };
+  //creates an imageArray that has the image paths for the house
+  let imageArray = [];
+  if (listingData != null) {
+    for (let i = 1; i <= 6; ++i) {
+      imageArray.push(listingData?.imgPath + "/" + i + ".png");
+    }
   }
+
+  //handles the booking process by passing data to the checkout page through url
+  const handleBookNow = () => {
+    if (selectedDates.length > 0) {
+      const selectedDatesString = encodeURIComponent(
+        JSON.stringify(selectedDates)
+      );
+      navigateTo(`/checkout/${params.id}?dates=${selectedDatesString}`);
+    } else {
+      // Show an alert or some indication to the user that they need to select dates first.
+      alert("Please select the dates you want to book.");
+    }
+  };
 
   return (
     <div
       style={{
-        backgroundColor: "lightgrey",
+        backgroundColor: "#F4F7FF",
         marginTop: "4rem",
         padding: "10px",
-        height: "1000vh",
       }}
     >
       {listingData != null ? (
-        <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+        <div
+          style={{
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            alignItems: "center",
+          }}
+        >
           <div
             className="head"
             style={{ display: "flex", justifyContent: "space-between" }}
@@ -92,11 +170,12 @@ function ListingPage() {
                 />
                 <h3>{listingData.rating}</h3>
               </div>
-              <h3> {listingData.location}</h3>
+              <h3> {listingData.city}</h3>
             </div>
           </div>
 
           <div className="carousel">
+            {/* Carousel of images */}
             <Carousel
               swipeable={false}
               draggable={false}
@@ -115,62 +194,18 @@ function ListingPage() {
               itemClass="carousel-item-padding-40-px"
               autoPlay={true}
             >
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic1}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic2}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic3}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic4}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic1}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic2}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic3}
-                  alt={listingData.title}
-                />
-              </div>
-              <div>
-                <img
-                  className="imgListing"
-                  src={listingData.photos.pic4}
-                  alt={listingData.title}
-                />
-              </div>
+              {imageArray.map((srcImg) => {
+                return (
+                  <div>
+                    <img
+                      className="imgListing"
+                      src={srcImg}
+                      alt={listingData.title}
+                      key="${srcImg}"
+                    />
+                  </div>
+                );
+              })}
             </Carousel>
           </div>
 
@@ -184,7 +219,7 @@ function ListingPage() {
               <h2>
                 {"Host: "}
                 <span style={{ fontWeight: "lighter" }}>
-                  {listingData.hostName}
+                  {listingData.host}
                 </span>
               </h2>
 
@@ -192,35 +227,87 @@ function ListingPage() {
                 <h2>Description:</h2>
                 <p>{listingData.description}</p>
               </div>
-              <Button>Book Now</Button>
+              <Button>Take a VR Tour</Button>
+              <div className="amenities">
+                <h2>Amenities:</h2>
+                <ul>
+                  {listingData.amenities &&
+                    Object.entries(cleanAmenities(listingData.amenities)).map(
+                      ([key, value]) =>
+                        value && (
+                          <li key={key}>
+                            {key.charAt(0).toUpperCase() +
+                              key.slice(1).replace(/([A-Z])/g, " $1")}
+                          </li>
+                        )
+                    )}
+                </ul>
+              </div>
+
+              <div className="property-details">
+                <h2 className="property-details-heading">Property Details:</h2>
+                <div className="property-details-content">
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={bed} />
+                    <div className="property-detail-text">
+                      <h3>Beds</h3>
+                      <p>{listingData.bed}</p>
+                    </div>
+                  </div>
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={bath} />
+                    <div className="property-detail-text">
+                      <h3>Baths</h3>
+                      <p>{listingData.bath}</p>
+                    </div>
+                  </div>
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={area} />
+                    <div className="property-detail-text">
+                      <h3>Square Footage</h3>
+                      <p>{listingData.area} sqft</p>
+                    </div>
+                  </div>
+                  <div className="property-detail">
+                    <img className="property-detail-icon" src={audience} />
+                    <div className="property-detail-text">
+                      <h3>Guests</h3>
+                      <p>{listingData.maxGuests}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="calendar">
               <Calendar
                 selected={selectedDates}
                 onChange={handleChange}
-                onOverbook={(e, err) => alert(err)}
-                disabled={(date, state) => !state.isSameMonth}
                 reserved={reserved}
                 variant="booking"
-                dateFnsOptions={{ weekStartsOn: 1 }}
+                dateFnsOptions={{ weekStartsOn: 0 }}
                 range={true}
               />
+
+              <Button onClick={handleBookNow} style={{ height: "45vh" }}>
+                Book Now
+              </Button>
             </div>
           </div>
         </div>
       ) : (
         <>
-          <h1
+          {/* If listingData has not been rendered yet, then show a loading screen */}
+          <h3
             style={{
-              color: "red",
+              color: "blue",
               alignSelf: "center",
-              marginLeft: "20px",
-              marginTop: "20px",
+              marginLeft: "10px",
+              marginTop: "10px",
             }}
           >
-            ERROR: Not a valid listing
-          </h1>
+            Loading, please wait.
+          </h3>
         </>
       )}
     </div>

@@ -60,14 +60,28 @@ function Header({ authenticatedUser, setAuthenticatedUser }) {
                 </h1>
               </div>
             </div>
-            <div className="col d-flex align-items-center">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Search"
-                aria-label="default input example" />
+          </div>
+          <div className="col d-flex align-items-center">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Search"
+              aria-label="default input example"
+            />
+            <Link to={"/search/1"}>
               <button type="button" className="btn btn-primary">
                 Search
+              </button>
+            </Link>
+
+            <div className="popup">
+              <button
+                type="button"
+                className="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                <i class="bi bi-sliders"></i>
               </button>
               <div className="popup">
                 <button

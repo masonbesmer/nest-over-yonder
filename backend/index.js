@@ -6,6 +6,8 @@ import passport from 'passport';
 import { serialize, parse } from 'cookie'
 import { Strategy as LocalStrategy } from 'passport-local';
 import { MAX_AGE, setTokenCookie, getTokenCookie } from './auth-cookies.js' //for encryption (not used at the moment)
+import { ObjectSchema } from 'yup';
+import { Double, Int32 } from 'mongodb';
 
 const app = express();
 const port = 4000;
@@ -53,6 +55,150 @@ const UserSchema = new mongoose.Schema({
 UserSchema.methods.comparePassword = function (password) {
     return password === this.password;
 };
+
+    const ListingSchema = new mongoose.Schema({
+        title: {
+            type: String,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
+        amenities: {
+            type: {
+                kitchen: Boolean,
+                washer: Boolean,
+                dryer: Boolean,
+                ac: Boolean,
+                wifi: Boolean,
+                heat: Boolean,
+                parking: Boolean,
+            },
+            required: false,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        host: {
+            type: String,
+            required: true,
+        },
+        hostId: {
+            type: Number,
+            required: true,
+        },
+        imgPath: {
+            type: String,
+            required: true,
+        },
+        price:{
+            type: Number,
+            required: true,
+        },
+        rating:{
+            type: Number,
+            required: true,
+        },
+        maxGuests:{
+            type: Number,
+            required: true,
+        },
+        type:{
+            type: String,
+            required: true,
+        },
+        listId:{
+            type: Number,
+            required: true,
+        },
+        reservedDates:[{
+            startDate: { type: String, required: false },
+            endDate: { type: String, required: false },
+            _id: {type: String, required: false}
+        }],
+        bath:{
+            type: Number,
+            required: true
+        },
+        bed:{
+            type: Number,
+            required: true
+        },
+        area:{
+            type: Number,
+            required: false
+        },
+    });
+
+    const TransactionSchema = new mongoose.Schema({
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+        },
+        cardNum:{
+            type: String,
+            required: true,
+        },
+        cardExp: {
+            type: String,
+            required: true,
+        },
+        cardCVV:{
+            type: Number,
+            required: true,
+        },
+        zipCode:{
+            type: Number,
+            required: true,
+        },
+        country: {
+            type: String,
+            required: true,
+        },
+        startDate: {
+            type: String,
+            required: true,
+        },
+        endDate: {
+            type: String,
+            required: true,
+        },
+        totalNights: {
+            type: Number,
+            required: true,
+        },
+        totalPrice: {
+            type: Number,
+            required: true,
+        },
+        listId:{
+            type: Number,
+            required: true,
+        },
+        transactionId:{
+            type: Number,
+            required: false,
+        },
+        userId:{
+            type: Number,
+            required: false,
+        },
+        hostId: {
+            type: Number,
+            required: false,
+        },
+       
+    });
 
 // Create User model
 const User = mongoose.model('user', UserSchema);
@@ -225,6 +371,65 @@ export async function setLoginSession(res, session) {
   
     setTokenCookie(res, obj)
 }
+
+//for Listings
+const Listing = mongoose.model('listing', ListingSchema);
+app.get('/listings', async (req, res) => {
+    try{
+        const listings = await Listing.find({});
+
+        res.json(listings);
+    }
+    catch(error){
+        console.error('Error getting listings:', error);
+        res.status(500).json({ message: 'Something went wrong'});
+    }
+});
+
+//for Transactions
+const Transaction = mongoose.model('transaction', TransactionSchema);
+
+//API endpoint for posting a new transaction
+app.post('/newtransaction', async(req, res)=>{
+    try{
+        //grab all the basic data
+        const { name, email,  cardNum, cardExp, cardCVV, zipCode, country,  startDate, endDate, totalNights, totalPrice, listId, transactionId, userId, hostId} = req.body;
+
+        // Create new transaction
+        const newTransaction = new Transaction({name, email,  cardNum, cardExp, cardCVV, zipCode, country,  startDate, endDate, totalNights, totalPrice, listId, transactionId, userId, hostId});
+        await newTransaction.save();
+
+        //if transaction worked, then append the reserved dates to the relevant listing
+        const listIdInt = parseInt(listId);
+        const listing = await Listing.findOne({ listId: listIdInt });
+        if (!listing) {
+            return res.status(404).json({ message: 'Listing not found' });
+        }
+        //pushing dates to listing
+        listing.reservedDates.push({startDate: new Date(startDate), endDate: new Date(endDate)});
+        await listing.save();
+        
+
+        res.status(201).json({ message: 'Transaction completed successfully' });
+    }
+    catch(error){
+        console.log('Error confirming transaction:', error);
+        res.status(500).json({ message: 'Something went wrong' });
+    }
+});
+
+//API endpoint for getting transactions
+app.get('/transactions', async (req, res) => {
+    try{
+        const transactions = await Transaction.find({});
+
+        res.json(transactions);
+    }
+    catch(error){
+        console.error('Error getting transactions:', error);
+        res.status(500).json({ message: 'Something went wrong'});
+    }
+});
 
 // Start the server
 app.listen(port, () => {
