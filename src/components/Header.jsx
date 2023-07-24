@@ -24,7 +24,8 @@ function Header({ authenticatedUser, setAuthenticatedUser }) {
   }
 
   return (
-    <><div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -40,7 +41,8 @@ function Header({ authenticatedUser, setAuthenticatedUser }) {
           </div>
         </div>
       </div>
-    </div><header className="header">
+    </div>
+    <header className="header">
         <div className="container-fluid">
           <div className="row">
             <div className="col d-flex align-items-center">
@@ -58,7 +60,6 @@ function Header({ authenticatedUser, setAuthenticatedUser }) {
                 >
                   Nest Over Yonder
                 </h1>
-              </div>
             </div>
           </div>
           <div className="col d-flex align-items-center">
@@ -67,7 +68,7 @@ function Header({ authenticatedUser, setAuthenticatedUser }) {
               type="text"
               placeholder="Search"
               aria-label="default input example"
-            />
+              />
             <Link to={"/search/1"}>
               <button type="button" className="btn btn-primary">
                 Search
@@ -80,20 +81,11 @@ function Header({ authenticatedUser, setAuthenticatedUser }) {
                 className="btn btn-success"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-              >
+                >
                 <i class="bi bi-sliders"></i>
               </button>
-              <div className="popup">
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                >
-                  <i className="bi bi-sliders"></i>
-                </button>
-              </div>
             </div>
+                  </div>
             <div className="col d-flex align-items-center justify-content-end">
               {/* Login */}
               <div className="profile-dropdown-btn">

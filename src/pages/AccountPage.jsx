@@ -8,6 +8,7 @@ function AccountPage({ email }) {
   const [showAccount, setShowAccount] = useState(true);
   const [showReservations, setShowReservations] = useState(false);
   const [userData, setUserData] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     const getUser = async () =>{
@@ -35,12 +36,20 @@ function AccountPage({ email }) {
     return <div></div>;
   }
   function Reservations() {
-    if (true) {
+    // if (true) { // would of been used for actually seeing reservations
       
-    }
+    // }
     setShowAccount(false);
     setShowReservations(true);
     return <div></div>;
+  }
+
+  const handlePassChange = async () =>{
+    try {
+      
+    } catch {
+
+    }
   }
 
   return (
