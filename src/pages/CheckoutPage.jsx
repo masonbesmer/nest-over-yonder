@@ -4,11 +4,13 @@ import InputMask from "react-input-mask";
 import { Button } from "react-bootstrap";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
   const params = useParams(); //used to grab the id from the url
   const location = useLocation(); //used to grab the other data from the url
   const [selectedDates, setSelectedDates] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Parse the "dates" URL parameter to retrieve the selectedDates data
@@ -102,6 +104,7 @@ const CheckoutPage = () => {
         bookingData
       ); //sends data to db
       console.log("Transaction Completed Successfully");
+      navigate("/confirmed");
     } catch (error) {
       console.log(error.response);
       console.log("Error completing transaction in CheckoutPage:", error);
