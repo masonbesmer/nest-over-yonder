@@ -7,36 +7,41 @@ import axios from "axios";
 //in order to access account functionality
 const signLink = "/Signup";
 
-function LoginPage() {
+function LoginPage({ setAuthenticatedUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState(false); //shows message if user information is not correct
 
   const handleLogin = async () => {
-    // console.log("Form submitted");
     try {
-      const response = await axios.get("http://localhost:4000/users");
+      const response = await axios.post(
+        "http://localhost:4000/login",
+        { email, password },
+        { withCredentials: true }
+      );
       const data = response.data;
 
-      for (const user of data) {
-        // Use 'user' to access current user in the loop
-        if (user.email === email && user.password === password) {
-          console.log("Login successful");
-          // redirect to the homepage
-          navigate("/");
-          console.log(
-            "AFter NAVIGATE--------------------------------------------------"
-          );
-        }
+      if (data.user) {
+        console.log("Login successful");
+        alert(
+          "You succefully logged in, you will be redirected to the homescreen"
+        ); //alert user that he is logged in
+        // Set the user as authenticated in the Header component
+        setAuthenticatedUser(data.user);
+        // store the user in localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ email: data.user.email })
+        );
+        // Redirect to the homepage after successful login
+        navigate("/");
+      } else {
+        console.error("Login failed, user:", email);
       }
-
-      // This code block will only execute if no matching user is found
-      console.error("Login failed, user:", email);
-      setShowMessage(true);
-      // handle login error, e.g., show an error message
     } catch (error) {
       console.error("Error logging in:", error);
+      setShowMessage(true);
       // handle login error, e.g., show an error message
     }
   };
@@ -45,15 +50,8 @@ function LoginPage() {
     <div className="container pt-5 mt-5">
       <div className="row justify-content-center align-items-center">
         {showMessage && (
-          <div class="alert alert-danger show text-center" role="alert">
+          <div className="alert alert-danger show text-center" role="alert">
             Email and password do not match, One or both are incorrect!
-            {/*-------------------------------------------------------FIX ME */}
-            {/* <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button> */}
           </div>
         )}
         <form name="login" method="post" className="col-6 border p-3 rounded">
