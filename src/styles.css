@@ -59,15 +59,13 @@
 
 }
 
-.pin {
-  display: flex;
-  align-items: center;
-  width: 180px;
-  color: var(--main-blue);
-}
+
 
 .pin-icon {
-  font-size: 4rem;
+  font-size: 2rem;
+  position: relative;
+  margin-top: -20px;
+  margin-left: -20px;
 }
 
 .pin-text {
