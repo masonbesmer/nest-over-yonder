@@ -41,7 +41,7 @@ function App() {
           <Route path="/login" element={<LoginPage setAuthenticatedUser={setAuthenticatedUser} />} />
           <Route path="/checkout/:id" element={<CheckoutPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/Account" element={<AccountPage />} />
+          <Route path="/Account" element={<AccountPage setAuthenticatedUser={setAuthenticatedUser} />} />
           <Route path="/About" element={<AboutPage />} />
         </Routes>
         <Filter />
