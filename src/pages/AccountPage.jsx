@@ -8,7 +8,7 @@ function AccountPage({ email }) {
   const [showAccount, setShowAccount] = useState(true);
   const [showReservations, setShowReservations] = useState(false);
   const [userData, setUserData] = useState("");
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     const getUser = async () =>{
@@ -45,10 +45,15 @@ function AccountPage({ email }) {
   }
 
   const handlePassChange = async () =>{
-    try {
-      
-    } catch {
+    if(newPassword===""){
+      setMessage(true);
+    }
+    else{
+      try {
 
+      } catch (error) {
+
+      }
     }
   }
 
@@ -61,6 +66,27 @@ function AccountPage({ email }) {
         justifyContent: "space-between",
       }}
     >
+      {/* Modal below for when user is trying to change password */}
+      <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Password?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You will be changing the password to the following: '{newPassword}'
+        <br /> <br />
+        Is this okay? You will be returned to the Login Screen so that you can login again!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-success" onClick={handlePassChange()}>Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{/* Modal Above */}
       <div className="row h-100">
           <div className="sidebar col-3">
             <button type="button" className="btn btn-link fs-3 ps-4 w-100" onClick={Accountpage}>
@@ -91,10 +117,10 @@ function AccountPage({ email }) {
                 <form>
                   <label>
                     New Password:
-                    <input type="password" />
+                    <input type="password" onChange={(e) => setNewPassword(e.target.value)} required/>
                   </label>
                   <br />
-                  <button type="submit">Change Password</button>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Change Password</button>
                 </form>
                 {/* Add more account settings options here */}
               </div>

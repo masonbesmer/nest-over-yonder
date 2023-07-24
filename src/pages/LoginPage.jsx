@@ -79,7 +79,7 @@ function LoginPage({ setAuthenticatedUser }) {
               Password
             </label>
             <input
-              type="password"
+              type="text"
               className="form-control"
               id="password"
               name="password"

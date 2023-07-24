@@ -325,6 +325,17 @@ app.get('/logout', (req, res) => {
     }
 });
 
+//APT endpoint to change password
+app.post('/changePass', async (req, res) => {
+    try {
+        if(req.body.email){
+            
+        }
+    } catch (error) {
+        
+    }
+})
+
 //API endpoint to get one user
 app.post('/user', async (req, res) => {
     try {
