@@ -14,8 +14,8 @@ import area from "../assets/area.png";
 import audience from "../assets/audience.png";
 import bath from "../assets/bathtub.png";
 import bed from "../assets/bed.png";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import VRTour from "../components/VRTour";
 
 const responsive = {
   //for the image carousel
@@ -26,10 +26,41 @@ const responsive = {
   },
 };
 
+const VRTourStyles = {
+  width: "50vw",
+  height: "50px",
+};
+
+const popupStyles = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "rgba(0, 0, 0, 0.5)",
+  zIndex: 2,
+};
+
+const popupContentStyles = {
+  background: "#fff",
+  padding: "20px",
+  borderRadius: "8px",
+  boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+  width: "60%",
+};
+
 function ListingPage() {
   const params = useParams(); //to grab id from the url
   const [listingData, setListingData] = useState(null); //listingData stores the JSON data for each listing
   const navigateTo = useNavigate(); //used to navigate to other pages
+  const [showVRPopup, setShowVRPopup] = useState(false);
+
+  const handleToggleVRPopup = () => {
+    setShowVRPopup(!showVRPopup);
+  };
 
   const getListingData = async () => {
     //sends an API get request to grab the data for one relevant listing
@@ -227,7 +258,7 @@ function ListingPage() {
                 <h2>Description:</h2>
                 <p>{listingData.description}</p>
               </div>
-              <Button>Take a VR Tour</Button>
+              <Button onClick={handleToggleVRPopup}>Take a VR Tour</Button>
               <div className="amenities">
                 <h2>Amenities:</h2>
                 <ul>
@@ -243,7 +274,15 @@ function ListingPage() {
                     )}
                 </ul>
               </div>
-
+              {showVRPopup && (
+                <div style={popupStyles} className="popup">
+                  <div style={popupContentStyles} className="popup-content">
+                    <h2>Virtual Reality Tour</h2>
+                    <VRTour style={VRTourStyles} />
+                    <button onClick={handleToggleVRPopup}>Close</button>
+                  </div>
+                </div>
+              )}
               <div className="property-details">
                 <h2 className="property-details-heading">Property Details:</h2>
                 <div className="property-details-content">
