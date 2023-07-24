@@ -44,7 +44,7 @@ function App() {
           <Route path="/checkout/:id" element={<CheckoutPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/confirmed" element={<ConfirmationPage />} />
-          <Route path="/Account" element={<AccountPage />} />
+          <Route path="/Account" element={<AccountPage setAuthenticatedUser={setAuthenticatedUser} />} />
           <Route path="/About" element={<AboutPage />} />
           <Route path="/support" element={<SupportPage />} />
         </Routes>

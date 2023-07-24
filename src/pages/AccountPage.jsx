@@ -3,12 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles.css";
 
-function AccountPage({ email }) {
+function AccountPage({ setAuthenticatedUser }) {
   const navigate = useNavigate();
   const [showAccount, setShowAccount] = useState(true);
   const [showReservations, setShowReservations] = useState(false);
   const [userData, setUserData] = useState("");
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  // const [message, setMessage] = useState("");
 
   useEffect(() => {
     const getUser = async () =>{
@@ -44,11 +45,23 @@ function AccountPage({ email }) {
     return <div></div>;
   }
 
-  const handlePassChange = async () =>{
-    try {
-      
-    } catch {
-
+  const handlePassChange = async (event) =>{
+    if (newPassword === userData.password) {
+      // If the passwords match, display a message or perform any other action as needed
+      alert("New password is the same as the current password. No changes made.");
+      // window.location.href = "/Account";
+    }
+    else{
+      try {
+        const response = await axios.post('http://localhost:4000/changePass', { 'email': userData.email, 'currentPassword': userData.password, 'newPassword': newPassword });
+        console.log(response.data);
+        alert("You have successfully changed password to:", newPassword);
+        setAuthenticatedUser(null);
+        localStorage.clear();
+        window.location.href = "/";
+      } catch (error) {
+        console.log('Error changing password:', error)
+      }
     }
   }
 
@@ -61,6 +74,27 @@ function AccountPage({ email }) {
         justifyContent: "space-between",
       }}
     >
+      {/* Modal below for when user is trying to change password */}
+      <div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h1 className="modal-title fs-5" id="staticBackdropLabel">Change Password?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+        You will be changing the password to the following: '{newPassword}'
+        <br /> <br />
+        Is this okay? You will be returned to the Home Screen and You will need to login again!
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-danger" data-bs-dismiss="modal">No</button>
+        <button type="button" className="btn btn-success" onClick={handlePassChange}>Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{/* Modal Above */}
       <div className="row h-100">
           <div className="sidebar col-3">
             <button type="button" className="btn btn-link fs-3 ps-4 w-100" onClick={Accountpage}>
@@ -91,10 +125,10 @@ function AccountPage({ email }) {
                 <form>
                   <label>
                     New Password:
-                    <input type="password" />
+                    <input type="password" onChange={(e) => setNewPassword(e.target.value)} required/>
                   </label>
                   <br />
-                  <button type="submit">Change Password</button>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Change Password</button>
                 </form>
                 {/* Add more account settings options here */}
               </div>

@@ -325,6 +325,34 @@ app.get('/logout', (req, res) => {
     }
 });
 
+//APT endpoint to change password
+app.post('/changePass', async (req, res) => {
+    try {
+        const { email, currentPassword, newPassword } = req.body;
+
+        // Find the user with the provided email
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the current password provided by the user matches the user's actual password
+        if (!user.comparePassword(currentPassword)) {
+            return res.status(401).json({ message: 'Invalid current password' });
+        }
+
+        // Update the user's password with the new password
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ message: 'Something went wrong' });
+    }
+})
+
 //API endpoint to get one user
 app.post('/user', async (req, res) => {
     try {
