@@ -101,6 +101,7 @@
   width: 30%;
   display: flex;
   margin-left: 10rem;
+  z-index: 1;
 }
 
 .listingprops {
