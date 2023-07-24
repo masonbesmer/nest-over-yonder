@@ -13,6 +13,7 @@ import SearchPage from "./pages/SearchPage";
 import ErrorPage from "./pages/ErrorPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import Footer from "./components/Footer";
+import ConfirmationPage from "./pages/ConfirmationPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/checkout/:id" element={<CheckoutPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/confirmed" element={<ConfirmationPage />} />
         </Routes>
         <Filter />
         <Footer />
