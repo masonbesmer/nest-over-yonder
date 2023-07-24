@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage";
 import AccountPage from "./pages/AccountPage";
 import AboutPage from "./pages/AboutPage";
 import axios from 'axios';
+import SupportPage from "./pages/SupportPage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/Account" element={<AccountPage />} />
           <Route path="/About" element={<AboutPage />} />
+          <Route path="/support" element={<SupportPage />} />
         </Routes>
         <Filter />
         <Footer />

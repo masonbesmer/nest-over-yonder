@@ -21,11 +21,11 @@ function SearchListing({
   const listingLink = "/listing/" + id;
 
   return (
-    <div className="listing rounded" style={{ display: "flex", flexDirection: "column", background: "whitesmoke", maxWidth: "300px" }}>
+    <div className="listing rounded" style={{ display: "flex", flexDirection: "column", background: "whitesmoke", maxWidth: "300px", minHeight: "800px" }}>
       <Link to={listingLink}>
         <img
           className="listing-image rounded"
-          style={{ cursor: "pointer", maxWidth: "300px", height: "auto" }}
+          style={{ cursor: "pointer", maxWidth: "300px", maxHeight: "300px" }}
           src={src}
         />
       </Link>
@@ -43,8 +43,8 @@ function SearchListing({
         </Link>
 
         <h4>{location}</h4>
-        <h5>{description}</h5>
-        <h3>{price}</h3>
+        <h5 style={{ margin: '5px' }}>{description}</h5>
+        <h3 style={{ marginBottom: 'auto', marginTop: 'auto' }}>${price}</h3>
 
         <div
           className="rating"
